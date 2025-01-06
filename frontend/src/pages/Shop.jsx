@@ -4,12 +4,24 @@ import ShopFilter from "../components/ShopFilter";
 // import { IoIosClose } from "react-icons/io";
 import { IoIosArrowDown } from "react-icons/io";
 import { CiFilter } from "react-icons/ci";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { ProductContext } from "../context/ProductContext";
 import Loading from "../components/Loading";
 import axios from "axios";
 
 const Shop = () => {
+    const filterRef = useRef();
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+          if (filterRef.current && !filterRef.current.contains(event.target)) {
+            setFilterOpen(false);
+          }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+          document.removeEventListener("mousedown", handleClickOutside);
+        };
+      }, [setFilterOpen]);
   const [filters,setFilters] = useState({
     category:[],
     // price:{min:null,max:null},
@@ -73,7 +85,11 @@ const Shop = () => {
             <div className="flex mt-6 gap-4">
               {/* <ShopFilter /> */}
               <div className="bg-gray-400 pb-10  bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 w-full   rounded-2xl flex flex-col text-black ">
-                {filterOpen && <ShopFilter filters={filters} setFilters={setFilters} />}
+                {filterOpen && (
+                    <div className="" ref={filterRef}>
+                        <ShopFilter filters={filters} setFilters={setFilters} />
+                    </div>
+                )}
                 <div className=" bg-gray-100 py-4 m-2 rounded-lg flex justify-between px-5 items-center">
                   <div
                     className="flex  justify-center cursor-pointer items-center"
