@@ -9,13 +9,14 @@ import "swiper/css";
 import "swiper/css/scrollbar";
 // import required modules
 import { Scrollbar } from "swiper/modules";
-import { useContext } from "react";
-import { ProductContext } from "../context/ProductContext";
+// import { useContext } from "react";
+import {  useProduct } from "../context/ProductContext";
 
 import Loading from "./Loading";
 
 const BestSeller = () => {
-  const { products, error, loading } = useContext(ProductContext);
+  // const { products, loading } = useContext(ProductContext);
+  const {products,loading} = useProduct()
   // console.log(products)
   return (
     <>

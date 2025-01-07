@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import FilterList from "./FilterList";
+import { useProduct } from "../context/ProductContext";
 
 const categoryItem = [
   "Body Care",
@@ -25,13 +26,23 @@ const ingredientsItem = [
 //   "$1 - $49",
 // ];
 
-const ShopFilter = ({ filters, setFilters }) => {
+const ShopFilter = ({ onFilterChange
+  // filters, setFilters
+ }) => {
+  const {filters,updateFilters} = useProduct()
   const [open, setOpen] = useState({
     category: false,
-    // price: false,
     skinType: false,
     ingredients: false,
-  });
+  }); 
+  
+  const handleFilterChange = (key, value) => {
+    updateFilters({
+      [key]: filters[key]?.includes(value)
+        ? filters[key]?.filter((item) => item !== value)
+        : [...filters[key], value],
+    });
+  };
   return (
     <div className="bg-gray-400 z-40 top-16 left-2 absolute bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 w-1/2 md:w-1/4 p-4 md:p-10 flex flex-col md:gap-5   rounded-2xl text-black">
       <FilterList
@@ -41,7 +52,7 @@ const ShopFilter = ({ filters, setFilters }) => {
         name="Category"
         items={categoryItem}
         filters={filters}
-        setFilters={setFilters}
+        setFilters={handleFilterChange}
       />
       {/* <FilterList
         openValue={open?.price}
@@ -59,7 +70,7 @@ const ShopFilter = ({ filters, setFilters }) => {
         name="Skin Type"
         items={skinTypeItem}
         filters={filters}
-        setFilters={setFilters}
+        setFilters={handleFilterChange}
       />
       <FilterList
         openValue={open?.ingredients}
@@ -68,7 +79,7 @@ const ShopFilter = ({ filters, setFilters }) => {
         name="Ingredients"
         items={ingredientsItem}
         filters={filters}
-        setFilters={setFilters}
+        setFilters={handleFilterChange}
       />
     </div>
   );
