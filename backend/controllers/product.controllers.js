@@ -21,7 +21,7 @@ const getAllProducts =async(req,res)=>{
         if(req.query.ingredients){
             filters.ingredients = {$in:req.query.ingredients.split(",")};
         }
-        console.log('Filters:' + filters.ingredients)
+        // console.log('Filters:' + filters.ingredients)
         const products = await Product.find(filters);
         res.status(200).json(products)
     }catch(error){

@@ -36,7 +36,7 @@ const BestSeller = () => {
               style={{ width: "100%", overflow: "hidden" }}
             >
               {products?.map((product) => (
-                <SwiperSlide key={product?.id}>
+                <SwiperSlide key={product?._id}>
                   <ProductCard product={product} />
                 </SwiperSlide>
               ))}
@@ -56,7 +56,7 @@ const BestSeller = () => {
               style={{ width: "100%", overflow: "hidden" }}
             >
               {products?.map((product) => (
-                <SwiperSlide key={product?.id}>
+                <SwiperSlide key={product?._id}>
                   <ProductCard product={product} />
                 </SwiperSlide>
               ))}

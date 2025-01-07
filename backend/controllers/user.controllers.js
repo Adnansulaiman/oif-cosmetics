@@ -130,16 +130,21 @@ const addToWishlist = async (req, res) => {
     
     if (isAlready === -1) {
       user.wishlist.push({ productId: id });
+      await user.save();
+    res
+      .status(200)
+      .json({ message: "Product added in wishlist", wishlist: user.wishlist });
     } else {
       user.wishlist = user.wishlist.filter(
         (item) => item.productId.toString() !== id
       );
-      
-    }
-    await user.save();
+      await user.save();
     res
       .status(200)
-      .json({ message: "Product added in wishlist", wishlist: user.wishlist });
+      .json({ message: "Product removed in wishlist", wishlist: user.wishlist });
+      
+    }
+    
   } catch (error) {
     res.status(500).json({ message: "Error while adding wishlist",error });
   }

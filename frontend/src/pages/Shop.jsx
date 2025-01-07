@@ -10,6 +10,7 @@ import Loading from "../components/Loading";
 import axios from "axios";
 
 const Shop = () => {
+    const [filterOpen, setFilterOpen] = useState(false);
     const filterRef = useRef();
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -52,7 +53,7 @@ const Shop = () => {
       try{
         const response = await axios.get(`http://localhost:3000/api/products?${query.toString()}`);
         setProducts(response.data)
-        console.log(products)
+        // console.log(products)
       }catch(err){
         console.log(err)
       }
@@ -64,7 +65,7 @@ const Shop = () => {
   },[filters])
 
   // const { products, loading } = useContext(ProductContext);
-  const [filterOpen, setFilterOpen] = useState(false);
+ 
   return (
     <>
       {products && (
@@ -106,7 +107,7 @@ const Shop = () => {
                 </div>
                 <div className="flex gap-2 md:gap-10  justify-center flex-wrap px-11 ">
                   {products?.map((product) => (
-                    <ProductCard key={product.id} product={product} />
+                    <ProductCard key={product._id} product={product} />
                   ))}
                 </div>
               </div>

@@ -13,14 +13,14 @@ import { CiLogin, CiLogout, CiSettings } from "react-icons/ci";
 import { useAuth } from "../context/AuthContext";
 
 const Navbar = ({ setCartOpen }) => {
-  const { logout, loggedIn, getUserData } = useAuth();
+  const { logout, loggedIn, getUserData,userData } = useAuth();
   const navigate = useNavigate();
   const [openMenu, setOpenMenu] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
 
-  const token = localStorage.getItem('token')
-  const userData = getUserData(token)
-
+//   const token = localStorage.getItem('token')
+//  const userData = getUserData(token)
+    console.log(userData)
   const profileRef = useRef();
   useEffect(() => {
     const handleClickCloseProfile = (event) => {
@@ -49,7 +49,7 @@ const Navbar = ({ setCartOpen }) => {
 
   const handleLogout = () => {
     logout();
-    navigate("/");
+    navigate('/');
   };
 
   const scrollToTop = () => {
@@ -115,7 +115,7 @@ const Navbar = ({ setCartOpen }) => {
             </Link>
           )}
           <div className="flex gap-2 items-center ">
-            <p>{userData ? userData?.user?.firstName : ""}</p>
+            <p>{userData ? userData?.firstName + " " + userData?.lastName : ""}</p>
             <Link onClick={() => setProfileOpen(!profileOpen)}>
               <img
                 src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
@@ -139,11 +139,8 @@ const Navbar = ({ setCartOpen }) => {
                 className="w-6 h-6 rounded-full hover:border-2 hover:border-black"
               />
             </Link>
-            <p>
-              {userData
-                ? userData?.user?.firstName + " " + userData?.user?.lastName
-                : "Profile"}
-            </p>
+            <p>{userData ? userData?.firstName + " " + userData?.lastName : "Profile"}</p>
+
           </div>
           <ul className="flex flex-col px-4">
             <Link to='/wishlist'
@@ -224,9 +221,8 @@ const Navbar = ({ setCartOpen }) => {
                 />
               </Link>
               <p>
-                {userData
-                  ? userData?.user?.firstName + " " + userData?.user?.lastName
-                  : "Profile"}
+              <p>{userData ? userData?.firstName + " " + userData?.lastName : "Profile"}</p>
+
               </p>
             </div>
             <ul className="flex px-4 py-2 flex-col  gap-2">
