@@ -25,11 +25,11 @@ const Wishlist = () => {
 
 
   return (
-    <div className="flex flex-wrap px-12 pt-28">
+    <div className="flex justify-center md:justify-start  flex-wrap px-12 pt-28 gap-5 md:gap-10">
        {
             products?.map((product)=>(
 
-                <ProductCard key={product._id} product={product?.productId} />
+                <ProductCard key={product._id} product={product?.productId}  />
             ))
         }
         

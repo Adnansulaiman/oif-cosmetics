@@ -10,6 +10,8 @@ import Loading from "../components/Loading";
 import axios from "axios";
 
 const Shop = () => {
+  
+  // const [refresh,setRefresh] = useState(false)
     const [filterOpen, setFilterOpen] = useState(false);
     const filterRef = useRef();
     useEffect(() => {
