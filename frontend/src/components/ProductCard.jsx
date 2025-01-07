@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 import ButtonLoading from "./ButtonLoading";
 import { useAuth } from "../context/AuthContext";
 
-const ProductCard = ({ product}) => {
+const ProductCard = ({ product,onRemoveFromWishlist}) => {
   const [wishlistData, setWishlistData] = useState(null);
   const [wishlistMessage, setWishlistMessage] = useState(null);
   const [wishlistLoading, setWishlistLoading] = useState(false);
@@ -19,6 +19,8 @@ const ProductCard = ({ product}) => {
       setWishlistData(userData.wishlist);
     }
   }, [userData]);
+
+
 
   const addToWishlist = async (id, e) => {
     e.stopPropagation(); // Prevent Link navigation
@@ -38,7 +40,10 @@ const ProductCard = ({ product}) => {
 
       setWishlistData(response.data?.wishlist);
       setWishlistMessage(response.data.message);
-      
+      // Notify parent (Wishlist) about the removal
+    if (alreadyWishlist !== -1 && onRemoveFromWishlist) {
+      onRemoveFromWishlist(id);
+    }
     } catch (err) {
       console.log(err);
     } finally {
@@ -49,7 +54,7 @@ const ProductCard = ({ product}) => {
 
   const alreadyWishlist = wishlistData?.findIndex(
     (item) => item.productId === product._id
-  );
+  ) 
 
   return (
     <Link to={`/product/${product?._id}`}>

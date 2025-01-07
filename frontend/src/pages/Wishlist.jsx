@@ -23,13 +23,18 @@ const Wishlist = () => {
         fetchWishlistProduct()
     },[])
 
+    const handleRemoveFromWishlist = (removedProductId) => {
+        setProducts((prevProducts) =>
+          prevProducts.filter((product) => product.productId._id !== removedProductId)
+        );
+      };
 
   return (
     <div className="flex justify-center md:justify-start  flex-wrap px-12 pt-28 gap-5 md:gap-10">
        {
             products?.map((product)=>(
 
-                <ProductCard key={product._id} product={product?.productId}  />
+                <ProductCard key={product._id} product={product?.productId} onRemoveFromWishlist={handleRemoveFromWishlist} />
             ))
         }
         
