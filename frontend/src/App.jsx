@@ -12,18 +12,11 @@ import SingleProduct from "./pages/SingleProduct";
 import Wishlist from "./pages/Wishlist";
 
 function App() {
-  const [cartOpen, setCartOpen] = useState(false);
   return (
     <div className="bg-secondary">
-      <Navbar cartOpen={cartOpen} setCartOpen={setCartOpen} />
+      <Navbar/>
 
-      {cartOpen && (
-      <div
-        className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 backdrop-filter backdrop-blur-sm z-40"
-        onClick={() => setCartOpen(false)} // Close cart on overlay click
-      ></div>
-    )}
-      {cartOpen && <Cart setCartOpen={setCartOpen} />}
+     
 
       <Routes>
         <Route path="/" element={<Home />} />

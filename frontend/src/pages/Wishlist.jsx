@@ -30,15 +30,21 @@ const Wishlist = () => {
       };
 
   return (
-    <div className="flex justify-center md:justify-start  flex-wrap px-12 pt-28 gap-5 md:gap-10">
+    
+        
+    <div className="flex flex-col px-12 pt-28 ">
+        <h1 className='text-3xl text-center text-slate-800 font-bold mb-6'>Your Wishlist</h1>
+       <div className="flex gap-5 md:gap-10 justify-center md:justify-start  flex-wrap">
        {
             products?.map((product)=>(
 
                 <ProductCard key={product._id} product={product?.productId} onRemoveFromWishlist={handleRemoveFromWishlist} />
             ))
         }
+       </div>
         
     </div>
+    
   )
 }
 

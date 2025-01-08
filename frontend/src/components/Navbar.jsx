@@ -11,8 +11,11 @@ import { MdOutlineArticle } from "react-icons/md";
 
 import { CiLogin, CiLogout, CiSettings } from "react-icons/ci";
 import { useAuth } from "../context/AuthContext";
+import Cart from "./Cart";
 
-const Navbar = ({ setCartOpen }) => {
+const Navbar = () => {
+  const [cartOpen, setCartOpen] = useState(false);
+
   const { logout, loggedIn, getUserData,userData } = useAuth();
   const navigate = useNavigate();
   const [openMenu, setOpenMenu] = useState(false);
@@ -125,11 +128,17 @@ const Navbar = ({ setCartOpen }) => {
             </Link>
           </div>
         </div>
-      </div>
+        {/* {cartOpen && (
+      <div
+        className="  w-full h-full bg-black bg-opacity-50 backdrop-filter backdrop-blur-sm z-40"
+        onClick={() => setCartOpen(false)} // Close cart on overlay click
+      ></div>
+    )} */}
+      {cartOpen && <Cart setCartOpen={setCartOpen} />}
       {profileOpen && (
         <div
           ref={profileRef}
-          className="absolute rounded-2xl top-16 right-12 flex flex-col w-1/6 h-72 px-4 py-6 justify-between bg-white z-50"
+          className="absolute rounded-2xl top-14 right-0 flex flex-col w-1/6 h-72 px-4 py-6 justify-between bg-white z-50"
         >
           <div className="flex border-b pb-3 border-opacity-30 border-black flex-col gap-2  items-center ">
             <Link to="/profile">
@@ -169,8 +178,9 @@ const Navbar = ({ setCartOpen }) => {
           </div>
         </div>
       )}
+      </div>
       {/* Navbar Mobile */}
-      <div className="flex justify-between w-[calc(100%-1rem)] left-1 items-center md:hidden my-3 px-5 fixed z-50 py-3 mx-2 rounded-lg bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-20">
+      <div className="flex  justify-between w-[calc(100%-1rem)] items-center md:hidden my-3 px-5 fixed z-50 py-3 mx-2 rounded-lg bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-20">
         <h1 className="text-2xl font-black">OIF.</h1>
         <div className="flex gap-4 items-center">
           <Link>
@@ -195,13 +205,14 @@ const Navbar = ({ setCartOpen }) => {
             className="text-3xl cursor-pointer"
             onClick={() => setOpenMenu(true)}
           />
+          
         </div>
-      </div>
-      {openMenu && scrollToTop()}
+        {cartOpen && <Cart setCartOpen={setCartOpen} />}
+      
       {openMenu && (
         <div
           ref={menuRef}
-          className="gap-3  ease-in-out  sm:hidden justify-between absolute p-3 w-1/3 rounded-s-2xl h-screen z-50 bottom-0 right-0 bg-white flex flex-col"
+          className="gap-3  ease-in-out  sm:hidden justify-between absolute p-3 w-1/3 rounded-s-2xl h-screen z-50 -top-3 right-0 bg-white flex flex-col"
         >
           <div className="flex flex-col gap-4">
             <div className="flex border-b pb-1 border-opacity-30 border-black justify-end">
@@ -318,6 +329,9 @@ const Navbar = ({ setCartOpen }) => {
           </div>
         </div>
       )}
+      
+      </div>
+      
 
       {openMenu && (
         <div
