@@ -36,7 +36,7 @@ const getCart = async (req,res)=>{
     try{
         const user = await User.findById(req.user.id).populate("cart.cartItems.productId");
         let total = 0;
-        user.cart.cartItems.forEach(item => total += Math.floor(item.productId.price) * item.quantity);
+        user.cart.cartItems.forEach(item => total += Math.round(item.productId.price) * item.quantity);
         user.cart.totalPrice = total;
         await user.save()
         res.status(200).json(user.cart);

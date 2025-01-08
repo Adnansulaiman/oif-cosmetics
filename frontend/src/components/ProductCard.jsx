@@ -7,11 +7,15 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import ButtonLoading from "./ButtonLoading";
 import { useAuth } from "../context/AuthContext";
+import { IoMdCheckmark } from "react-icons/io";
 
-const ProductCard = ({ product,onRemoveFromWishlist}) => {
+const ProductCard = ({ product, onRemoveFromWishlist }) => {
   const [wishlistData, setWishlistData] = useState(null);
   const [wishlistMessage, setWishlistMessage] = useState(null);
   const [wishlistLoading, setWishlistLoading] = useState(false);
+  const [cartLoading, setCartLoading] = useState(false);
+  const [cartData, setCartData] = useState(null);
+  const [cartSuccess,setCartSuccess] = useState(false)
   const { userData } = useAuth();
   // console.log(userData?.wishlist)
   useEffect(() => {
@@ -20,7 +24,35 @@ const ProductCard = ({ product,onRemoveFromWishlist}) => {
     }
   }, [userData]);
 
-
+  const addToCart = async (id, e) => {
+    e.stopPropagation(); // Prevent Link navigation
+    e.preventDefault();
+    try {
+      setCartLoading(true);
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        `http://localhost:3000/api/cart/addcart`,
+        {productId:id,
+          quantity:1
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setCartData(response?.data);
+      console.log(response?.data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setCartLoading(false);
+      setCartSuccess(true)
+      setTimeout(()=>{
+        setCartSuccess(false)
+      },2000)
+    }
+  };
 
   const addToWishlist = async (id, e) => {
     e.stopPropagation(); // Prevent Link navigation
@@ -41,20 +73,20 @@ const ProductCard = ({ product,onRemoveFromWishlist}) => {
       setWishlistData(response.data?.wishlist);
       setWishlistMessage(response.data.message);
       // Notify parent (Wishlist) about the removal
-    if (alreadyWishlist !== -1 && onRemoveFromWishlist) {
-      onRemoveFromWishlist(id);
-    }
+      if (alreadyWishlist !== -1 && onRemoveFromWishlist) {
+        onRemoveFromWishlist(id);
+      }
     } catch (err) {
       console.log(err);
     } finally {
       setWishlistLoading(false);
     }
   };
-  console.log(wishlistData);
+  // console.log(wishlistData);
 
   const alreadyWishlist = wishlistData?.findIndex(
     (item) => item.productId === product._id
-  ) 
+  );
 
   return (
     <Link to={`/product/${product?._id}`}>
@@ -85,8 +117,16 @@ const ProductCard = ({ product,onRemoveFromWishlist}) => {
             <p className="text-xs">$ {product?.price}</p>
           </div>
           <div className="flex">
-            <div className="flex justify-center items-center w-6 h-6 md:w-9 md:h-9 bg-gray-400 rounded-md md:rounded-lg bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30">
-              <FaPlus className="hover:scale-110 text-xs md:text-base cursor-pointer" />
+            <div
+              onClick={(e) => addToCart(product?._id, e)}
+              className="flex justify-center items-center w-6 h-6 md:w-9 md:h-9 bg-gray-400 rounded-md md:rounded-lg bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30"
+            >
+              {cartLoading ? (
+                <ButtonLoading color="black" size="4" />
+              ) : (
+                cartSuccess ? <IoMdCheckmark className="text-xs md:text-base" /> :
+                <FaPlus className="hover:scale-110 text-xs md:text-base cursor-pointer" />
+              )}
             </div>
           </div>
         </div>
