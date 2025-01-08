@@ -8,6 +8,7 @@ import axios from "axios";
 import Loading from "../components/Loading";
 
 const SingleProduct = () => {
+  const [mainImage,setMainImage] = useState(null)
   const { prodId } = useParams();
   const [product, setProduct] = useState(null);
   const [loading,setLoading] = useState(true);
@@ -18,6 +19,7 @@ const SingleProduct = () => {
           `http://localhost:3000/api/products/${id}`
         );
         setProduct(response.data);
+        setMainImage(response.data?.images[0])
       };
       fetchProductDetails(prodId)
     } catch (err) {
@@ -35,31 +37,44 @@ const SingleProduct = () => {
       <div className=" flex md:flex-row flex-col w-full h-screen ">
       <div className="flex mt-5 w-full md:w-1/2 jus items-center h-[70vh] md:h-screen pl-10 pb-10 md:pb-0 md:pl-12 pt-20 md:pt-0 gap-5">
         <img
-          src={product?.images[0]}
+          src={mainImage}
           alt=""
           className="w-72  md:w-[542px] bg-center bg-cover rounded-2xl drop-shadow-md  "
         />
-        <div className="flex flex-col gap-5 md:gap-3">
-          <img
+        <div className="flex  flex-col gap-5 md:gap-3">
+          {product?.images?.map((image,i) =>(
+            <img
+            key={i}
+            onClick={()=> setMainImage(image)}
+            src={image}
+            className={`w-16 h-16 md:w-32 md:h-32 rounded-lg md:rounded-2xl drop-shadow-md ${mainImage === image && 'border border-black'}  cursor-pointer"`}
+            alt=""
+          />
+          ))}
+          {/* <img
+            onClick={()=> setMainImage(product?.images[0])}
             src={product?.images[0]}
-            className=" w-16 h-16 md:w-32 md:h-32 rounded-lg md:rounded-2xl drop-shadow-md  border border-black cursor-pointer"
+            className={`w-16 h-16 md:w-32 md:h-32 rounded-lg md:rounded-2xl drop-shadow-md ${mainImage === product?.images[0] && 'border border-black'}  cursor-pointer"`}
             alt=""
           />
           <img
-            src={product?.images[0]}
-            className="w-16 h-16 md:w-32 md:h-32 rounded-lg md:rounded-2xl drop-shadow-md  cursor-pointer"
+            onClick={()=> setMainImage(product?.images[1])}
+            src={product?.images[1]}
+            className={`w-16 h-16 md:w-32 md:h-32 rounded-lg md:rounded-2xl drop-shadow-md ${mainImage === product?.images[1] && 'border border-black'}  cursor-pointer"`}
             alt=""
           />
           <img
-            src={product?.images[0]}
-            className="w-16 h-16 md:w-32 md:h-32 rounded-lg md:rounded-2xl drop-shadow-md  cursor-pointer"
+            onClick={()=> setMainImage(product?.images[2])}
+            src={product?.images[2]}
+            className={`w-16 h-16 md:w-32 md:h-32 rounded-lg md:rounded-2xl drop-shadow-md ${mainImage === product?.images[2] && 'border border-black'}  cursor-pointer"`}
             alt=""
           />
           <img
-            src={product?.images[0]}
-            className="w-16 h-16 md:w-32 md:h-32 rounded-lg md:rounded-2xl drop-shadow-md  cursor-pointer"
+            onClick={()=> setMainImage(product?.images[3])}
+            src={product?.images[3]}
+            className={`w-16 h-16 md:w-32 md:h-32 rounded-lg md:rounded-2xl drop-shadow-md ${mainImage === product?.images[3] && 'border border-black'}  cursor-pointer"`}
             alt=""
-          />
+          /> */}
         </div>
       </div>
       <div className="flex flex-col w-full md:w-1/2 h-screen bg-gray-200 rounded-t-2xl md:rounded-s-2xl px-10  py-5 md:px-12 md:py-32 ">
