@@ -12,8 +12,10 @@ import { MdOutlineArticle } from "react-icons/md";
 import { CiLogin, CiLogout, CiSettings } from "react-icons/ci";
 import { useAuth } from "../context/AuthContext";
 import Cart from "./Cart";
+import { useUserInfo } from "../context/userContext";
 
 const Navbar = () => {
+  const {cartData} = useUserInfo()
   const [cartOpen, setCartOpen] = useState(false);
 
   const { logout, loggedIn, getUserData,userData } = useAuth();
@@ -109,7 +111,7 @@ const Navbar = () => {
                 setCartOpen(true);
               }}
             >
-              <p className="hover:scale-110">Cart(0)</p>
+              <p className="hover:scale-110">{`Cart(${cartData?.cartItems?.length})`}</p>
             </Link>
           )}
           {!loggedIn && (
@@ -187,13 +189,14 @@ const Navbar = () => {
             <IoIosSearch className="text-2xl " />
           </Link>
           {loggedIn && (
-            <Link>
+            <Link className="relative">
               <LiaShoppingBagSolid
                 onClick={() => {
                   setCartOpen(true);
                 }}
                 className="text-2xl"
               />
+              <span className="bg-black w-3 h-3 text-white flex justify-center items-center -top-0 -right-1 rounded-full absolute text-[10px]">{cartData?.cartItems?.length}</span>
             </Link>
           )}
           {!loggedIn && (

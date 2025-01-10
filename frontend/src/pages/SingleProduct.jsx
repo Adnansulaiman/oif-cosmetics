@@ -6,12 +6,48 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Loading from "../components/Loading";
+import { IoMdCheckmark } from "react-icons/io";
+import ButtonLoading from "../components/ButtonLoading";
 
 const SingleProduct = () => {
   const [mainImage,setMainImage] = useState(null)
   const { prodId } = useParams();
   const [product, setProduct] = useState(null);
   const [loading,setLoading] = useState(true);
+  const [cartLoading, setCartLoading] = useState(false);
+  const [cartData, setCartData] = useState(null);
+  const [cartSuccess,setCartSuccess] = useState(false);
+
+  const addToCart = async (id) => {
+    // e.stopPropagation(); // Prevent Link navigation
+    // e.preventDefault();
+    try {
+      setCartLoading(true);
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        `http://localhost:3000/api/cart/addcart`,
+        {productId:id,
+          quantity:1
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setCartData(response?.data);
+      console.log(response?.data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setCartLoading(false);
+      setCartSuccess(true)
+      setTimeout(()=>{
+        setCartSuccess(false)
+      },2000)
+    }
+  };
+
   useEffect(() => {
     try {
       const fetchProductDetails = async (id) => {
@@ -47,7 +83,7 @@ const SingleProduct = () => {
             key={i}
             onClick={()=> setMainImage(image)}
             src={image}
-            className={`w-16 h-16 md:w-32 md:h-32 rounded-lg md:rounded-2xl drop-shadow-md ${mainImage === image && 'border border-black'}  cursor-pointer"`}
+            className={`w-16 h-16 cursor-pointer md:w-32 md:h-32 rounded-lg md:rounded-2xl drop-shadow-md ${mainImage === image && 'border border-black'}  cursor-pointer"`}
             alt=""
           />
           ))}
@@ -110,10 +146,18 @@ const SingleProduct = () => {
           </div>
         </div>
         <div className="flex w-full justify-center gap-5 mt-8 mb-10 md:mt-16">
-          <button className="flex justify-center items-center gap-5 border w-1/2 h-14 font-bold text-lg rounded-xl  border-black">
-            Add to Cart{" "}
+          <button onClick={()=> addToCart(product?._id)} className="flex justify-center items-center gap-3 border w-1/2 h-14 font-bold text-xl rounded-xl  border-black">
+            
+            {cartLoading ? (
+                <ButtonLoading color="black" size="4" />
+              ) : (
+                cartSuccess ? <IoMdCheckmark className="text-base md:text-xl" /> :
+                // <FaPlus className="border border-black bg-black text-white rounded-md p-2 text-4xl" />
+                <p>Add to cart</p>
+              )}
+            
           </button>
-          <button className="flex justify-center items-center gap-5 bg-black text-white w-1/2 h-14 font-bold text-lg rounded-xl  ">
+          <button className="flex justify-center items-center gap-5 bg-black text-white w-1/2 h-14 font-bold text-xl rounded-xl  ">
             Buy now
           </button>
         </div>

@@ -8,14 +8,17 @@ import { useState, useEffect } from "react";
 import ButtonLoading from "./ButtonLoading";
 import { useAuth } from "../context/AuthContext";
 import { IoMdCheckmark } from "react-icons/io";
+import { useUserInfo } from "../context/userContext";
 
 const ProductCard = ({ product, onRemoveFromWishlist }) => {
+  // const {setCartData} = useUserInfo()
   const [wishlistData, setWishlistData] = useState(null);
   const [wishlistMessage, setWishlistMessage] = useState(null);
   const [wishlistLoading, setWishlistLoading] = useState(false);
   const [cartLoading, setCartLoading] = useState(false);
-  const [cartData, setCartData] = useState(null);
+  // const [cartData, setCartData] = useState(null);
   const [cartSuccess,setCartSuccess] = useState(false)
+  const {addToCart} = useUserInfo()
   const { userData } = useAuth();
   // console.log(userData?.wishlist)
   useEffect(() => {
@@ -24,25 +27,12 @@ const ProductCard = ({ product, onRemoveFromWishlist }) => {
     }
   }, [userData]);
 
-  const addToCart = async (id, e) => {
+  const handleAddToCart = async ( e) => {
     e.stopPropagation(); // Prevent Link navigation
     e.preventDefault();
     try {
       setCartLoading(true);
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `http://localhost:3000/api/cart/addcart`,
-        {productId:id,
-          quantity:1
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setCartData(response?.data);
-      console.log(response?.data);
+      addToCart(product._id,1);
     } catch (err) {
       console.error(err);
     } finally {
@@ -53,6 +43,12 @@ const ProductCard = ({ product, onRemoveFromWishlist }) => {
       },2000)
     }
   };
+
+  // const handleAddToCart = (e) => {
+  //   e.stopPropagation();
+  //   e.preventDefault();
+  //   addToCart(product._id,1);
+  // };
 
   const addToWishlist = async (id, e) => {
     e.stopPropagation(); // Prevent Link navigation
@@ -97,6 +93,7 @@ const ProductCard = ({ product, onRemoveFromWishlist }) => {
         <div className="flex justify-between px-3 items-center">
           <p className="font-semibold text-xs md:text-base">{product?.brand}</p>
           <div
+          
             onClick={(e) => addToWishlist(product?._id, e)}
             className="flex z-50 justify-center items-center w-6 h-6 md:w-9 md:h-9 bg-gray-400 rounded-lg bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30"
           >
@@ -118,9 +115,12 @@ const ProductCard = ({ product, onRemoveFromWishlist }) => {
           </div>
           <div className="flex">
             <div
-              onClick={(e) => addToCart(product?._id, e)}
+              onClick={handleAddToCart}
+              // onClick={(e) => addToCart(product?._id, e)}
               className="flex justify-center items-center w-6 h-6 md:w-9 md:h-9 bg-gray-400 rounded-md md:rounded-lg bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30"
             >
+              {/* <FaPlus className="hover:scale-110 text-xs md:text-base cursor-pointer" /> */}
+
               {cartLoading ? (
                 <ButtonLoading color="black" size="4" />
               ) : (
