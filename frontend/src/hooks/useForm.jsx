@@ -1,6 +1,8 @@
 import { useState } from "react"
+import { useAuth } from "../context/AuthContext";
 
  const useForm = (initialValue) =>{
+    
     const [values,setValues] = useState(initialValue);
 
     const handleChange = (e)=>{
@@ -12,6 +14,6 @@ import { useState } from "react"
         setValues(initialValue)
     }
 
-    return {values,handleChange,resetForm}
+    return {values,handleChange,resetForm,setValues}
 }
 export default useForm

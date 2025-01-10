@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const Product = require("../models/Product");
+
 const getUserDetails = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
@@ -16,18 +17,18 @@ const getUserDetails = async (req, res) => {
 };
 
 const updateUserDetails = async (req, res) => {
-  const { email } = req.body;
+  // const { email } = req.body;
   try {
     const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({ message: "User not found!" });
     }
-    const isUserExists = await User.findOne({ email: email });
-    if (isUserExists && email !== user.email) {
-      return res
-        .status(400)
-        .json({ message: "User is already exists, use another email address" });
-    }
+    // const isUserExists = await User.findOne({ email: email });
+    // if (isUserExists && email !== user.email) {
+    //   return res
+    //     .status(400)
+    //     .json({ message: "User is already exists, use another email address" });
+    // }
 
     const updatedUser = await User.findByIdAndUpdate(req.user.id, req.body, {
       new: true,
@@ -76,7 +77,7 @@ const updateAddress = async (req, res) => {
     await user.save();
     res
       .status(200)
-      .json({ message: "Update address successfully", address: user.address });
+      .json({ message: "Update address successfully", user });
   } catch (error) {
     res.status(500).json({ message: "Error while updating address" });
   }

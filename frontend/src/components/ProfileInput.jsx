@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProfileInput = ({label,type,name,value}) => {
+const ProfileInput = ({label,type,name,value,onChange}) => {
   return (
     <div className="flex flex-col gap-2 w-full">
       <label htmlFor="" className="text-base font-semibold">
@@ -9,7 +9,9 @@ const ProfileInput = ({label,type,name,value}) => {
       <input
         type={type}
         name={name}
+        value={value}
         className="border border-black p-2 rounded-lg"
+        onChange={onChange}
       />
     </div>
   );

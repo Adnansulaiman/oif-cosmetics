@@ -5,8 +5,10 @@ import ProfileImage from "../assets/images/profile-1.jpeg";
 // import { CiMail,CiPhone } from "react-icons/ci";
 import { FiPlus } from "react-icons/fi";
 import { Link, Outlet } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Profile = () => {
+    const {userData} = useAuth()
   return (
     <div className="pt-24 px-12 flex flex-col h-screen">
       <h1 className="text-3xl font-bold">Profile</h1>
@@ -19,9 +21,9 @@ const Profile = () => {
               className=" rounded-full shadow-md w-48 mt-6   "
             />
             <FiPlus className="absolute bottom-20 right-16 ring-4 ring-white  border border-black bg-white text-4xl p-2 rounded-full" />
-            <h1 className="text-2xl font-bold mt-3">Adnan sulaiman</h1>
+            <h1 className="text-2xl font-bold mt-3">{userData?.firstName + " " + userData?.lastName}</h1>
             <p className="text-sm font-medium text-slate-600 mb-3">
-              adnanxyz06@gmail.com
+              {userData?.email}
             </p>
           </div>
           <div className="flex flex-col gap-3 px-10 py-5 ">

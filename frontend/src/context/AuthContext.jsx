@@ -7,6 +7,26 @@ export const AuthProvider = ({children}) =>{
     const [loggedIn,setLoggedIn] = useState(!!localStorage.getItem('token'));
     const [userData,setUserData] = useState(null);
 
+    // useEffect(()=>{
+    //     const getUserData = async(token) =>{
+    //         try{
+    //             if(token){
+    //                 // console.log(token)
+    //                 const response = await axios.get(`http://localhost:3000/api/user`, {
+    //                     headers: {
+    //                       Authorization: `Bearer ${token}`,
+    //                     }
+    //                 });
+    //                 // console.log(response.data)
+    //                  setUserData(response.data.user);
+    //             }
+    //             return null
+    //         }catch(err){
+    //             console.log(err)
+    //         }
+    //     }
+    //     getUserData();
+    // },[userData])
     const getUserData = async(token) =>{
         try{
             if(token){
