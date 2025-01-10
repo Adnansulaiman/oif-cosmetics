@@ -10,13 +10,15 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import SingleProduct from "./pages/SingleProduct";
 import Wishlist from "./pages/Wishlist";
+import Profile from "./pages/Profile";
+import UserProfile from "./components/UserProfile";
+import Security from "./components/Security";
+import Orders from "./pages/Orders";
 
 function App() {
   return (
     <div className="bg-secondary">
-      <Navbar/>
-
-     
+      <Navbar />
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -25,6 +27,12 @@ function App() {
         <Route path="/register" element={<SignUp />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/product/:prodId" element={<SingleProduct />} />
+        <Route path="/profile" element={<Profile />}>
+          <Route path="/profile/" element={<UserProfile />} />
+          <Route path="/profile/security" element={<Security />} />
+          <Route path="/profile/orders" element={<Orders />} />
+          <Route path="/profile/wishlist" element={<Wishlist />} />
+        </Route>
       </Routes>
     </div>
   );
