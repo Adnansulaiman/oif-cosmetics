@@ -32,7 +32,7 @@ const ProductCard = ({ product, onRemoveFromWishlist }) => {
     e.preventDefault();
     try {
       setCartLoading(true);
-      addToCart(product._id,1);
+      await addToCart(product._id,1);
     } catch (err) {
       console.error(err);
     } finally {

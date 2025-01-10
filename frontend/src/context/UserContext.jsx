@@ -64,9 +64,36 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const incrementQuantity = async (productId) =>{
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.put(
+        `http://localhost:3000/api/cart/incrementcart/${productId}`,{},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+      setCartData(response.data.cart);
+    } catch (err) {
+      console.error("Error increment cart quantity :", err);
+    }
+  }
+
+  const decrementQuantity = async (productId) =>{
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.put(
+        `http://localhost:3000/api/cart/decrementcart/${productId}`,{},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+      setCartData(response.data.cart);
+    } catch (err) {
+      console.error("Error Decrement cart quantity :", err);
+    }
+  }
   return (
     <UserContext.Provider
-    value={{ wishlistData, cartData, cartLoading, addToCart, removeFromCart }}
+    value={{ wishlistData, cartData, cartLoading, addToCart, removeFromCart ,incrementQuantity,decrementQuantity}}
   >
     {children}
   </UserContext.Provider>

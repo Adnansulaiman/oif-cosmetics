@@ -8,35 +8,25 @@ import axios from "axios";
 import Loading from "../components/Loading";
 import { IoMdCheckmark } from "react-icons/io";
 import ButtonLoading from "../components/ButtonLoading";
+import { useUserInfo } from "../context/userContext";
 
 const SingleProduct = () => {
+  const [quantity,setQuantity] = useState(1)
+  const {addToCart} = useUserInfo()
   const [mainImage,setMainImage] = useState(null)
   const { prodId } = useParams();
   const [product, setProduct] = useState(null);
   const [loading,setLoading] = useState(true);
   const [cartLoading, setCartLoading] = useState(false);
-  const [cartData, setCartData] = useState(null);
+  // const [cartData, setCartData] = useState(null);
   const [cartSuccess,setCartSuccess] = useState(false);
 
-  const addToCart = async (id) => {
+  const handleAddToCart = async () => {
     // e.stopPropagation(); // Prevent Link navigation
     // e.preventDefault();
     try {
       setCartLoading(true);
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `http://localhost:3000/api/cart/addcart`,
-        {productId:id,
-          quantity:1
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setCartData(response?.data);
-      console.log(response?.data);
+      await addToCart(product._id,quantity)
     } catch (err) {
       console.error(err);
     } finally {
@@ -48,6 +38,15 @@ const SingleProduct = () => {
     }
   };
 
+  const handleIncrement =()=>{
+    if(quantity > 1){
+      setQuantity((prev)=> prev-1)
+    }
+  }
+  const handleDecrement =()=>{
+    if(quantity < 10) setQuantity((prev)=> prev+1)
+  }
+  
   useEffect(() => {
     try {
       const fetchProductDetails = async (id) => {
@@ -137,16 +136,16 @@ const SingleProduct = () => {
         {/* Size Wrapper */}
         <p className="font-bold text-xl md:text-2xl mt-3">$ {product?.price}</p>
         <div className="flex items-center mt-5 md:mt-10 gap-4">
-          <div className="flex justify-center items-center p-2 rounded-md border border-black">
+          <div onClick={handleIncrement} className="flex justify-center cursor-pointer items-center p-2 rounded-md border border-black">
             <LuMinus className="text-lg " />
           </div>
-          <p className="text-lg font-bold">1</p>
-          <div className="flex justify-center items-center p-2 rounded-md bg-black ">
+          <p className="text-lg font-bold">{quantity}</p>
+          <div onClick={handleDecrement} className="flex justify-center cursor-pointer items-center p-2 rounded-md bg-black ">
             <LuPlus className="text-lg text-white " />
           </div>
         </div>
         <div className="flex w-full justify-center gap-5 mt-8 mb-10 md:mt-16">
-          <button onClick={()=> addToCart(product?._id)} className="flex justify-center items-center gap-3 border w-1/2 h-14 font-bold text-xl rounded-xl  border-black">
+          <button onClick={()=> handleAddToCart()} className="flex justify-center items-center gap-3 border w-1/2 h-14 font-bold text-xl rounded-xl  border-black">
             
             {cartLoading ? (
                 <ButtonLoading color="black" size="4" />

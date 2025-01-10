@@ -123,10 +123,104 @@ const removeAProductInCart = async (req, res) => {
     }
   };
   
+  const incrementCartQuantity = async (req,res) =>{
+    const { id } = req.params;
+  
+    try {
+      const user = await User.findById(req.user.id).populate(
+        "cart.cartItems.productId"
+      );
+  
+      if (!user.cart.cartItems || user.cart.cartItems.length === 0) {
+        return res.status(404).json({ message: "Cart is empty or product not in cart" });
+      }
+  
+      // Filter the product from the cart
+      const cartProduct = user.cart.cartItems.filter(
+        (item) => item.productId._id.toString() === id
+      );
+    //   console.log("Increment Cart Data : ",cartProduct)
+      if(cartProduct[0].quantity > 1){
+          cartProduct[0].quantity -= 1;
+        }
+        console.log(cartProduct[0].quantity)
+      
+      
+      // Recalculate total price
+      let total = 0;
+      user.cart.cartItems.forEach((item) => {
+        total += Math.round(item.productId.price) * item.quantity;
+      });
+      user.cart.totalPrice = total;
+  
+      await user.save();
+  
+      // Populate cart items again before sending response
+      const updatedUser = await User.findById(req.user.id).populate(
+        "cart.cartItems.productId"
+      );
+  
+      res.status(200).json({
+        message: "Increment cart quantity",
+        cart: updatedUser.cart,
+      });
+    } catch (error) {
+      console.error("Error increment cart quantity:", error);
+      res.status(500).json({ message: "Error increment cart quantity" });
+    }
+  }
+  const decrementCartQuantity = async (req,res) =>{
+    const { id } = req.params;
+  
+    try {
+      const user = await User.findById(req.user.id).populate(
+        "cart.cartItems.productId"
+      );
+  
+      if (!user.cart.cartItems || user.cart.cartItems.length === 0) {
+        return res.status(404).json({ message: "Cart is empty or product not in cart" });
+      }
+  
+      // Filter the product from the cart
+      const cartProduct = user.cart.cartItems.filter(
+        (item) => item.productId._id.toString() === id
+      );
+    //   console.log("Increment Cart Data : ",cartProduct)
+      
+        cartProduct[0].quantity += 1;
+        
+        console.log(cartProduct[0].quantity)
+      
+      
+      // Recalculate total price
+      let total = 0;
+      user.cart.cartItems.forEach((item) => {
+        total += Math.round(item.productId.price) * item.quantity;
+      });
+      user.cart.totalPrice = total;
+  
+      await user.save();
+  
+      // Populate cart items again before sending response
+      const updatedUser = await User.findById(req.user.id).populate(
+        "cart.cartItems.productId"
+      );
+  
+      res.status(200).json({
+        message: "Decrement cart quantity",
+        cart: updatedUser.cart,
+      });
+    } catch (error) {
+      console.error("Error Decrement cart quantity:", error);
+      res.status(500).json({ message: "Error Decrement cart quantity" });
+    }
+  }
 
 module.exports = {
     addToCart,
     getCart,
     resetCart,
-    removeAProductInCart
+    removeAProductInCart,
+    incrementCartQuantity,
+    decrementCartQuantity
 }

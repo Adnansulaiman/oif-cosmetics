@@ -8,22 +8,45 @@ import { Link } from "react-router-dom";
 import { useUserInfo } from "../context/userContext";
 import { useState } from "react";
 import ButtonLoading from "./ButtonLoading";
+import { LuMinus, LuPlus } from "react-icons/lu";
 
 const CartItem = ({ item }) => {
   const { productId: product, quantity } = item;
-  const { removeFromCart } = useUserInfo();
+  const { removeFromCart,incrementQuantity,decrementQuantity } = useUserInfo();
   const [loading,setLoading] = useState(false)
 
-  const handleRemoveCart = (e) => {
+  const handleRemoveCart =async (e) => {
     e.preventDefault();
     e.stopPropagation();
     try{
       setLoading(true)
-      removeFromCart(product?._id);
+      await removeFromCart(product?._id);
     }catch(err){
       console.log(err)
     }finally{
       setLoading(false)
+    }
+    
+  };
+
+  const handleIncrement =async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try{
+      await incrementQuantity(product?._id);
+    }catch(err){
+      console.log(err)
+    }
+    
+  };
+
+  const handleDecrement =async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try{
+      await decrementQuantity(product?._id);
+    }catch(err){
+      console.log(err)
     }
     
   };
@@ -41,9 +64,9 @@ const CartItem = ({ item }) => {
             <h1 className="text-lg font-semibold">{product?.name}</h1>
             <p className="text-xs">${product?.price}</p>
             <div className="flex items-center mt-3 gap-2">
-              <button className="p-1 border rounded-md">-</button>
+              <button onClick={handleIncrement} className=" border p-1 border-black rounded-md"><LuMinus className="text-xs" /></button>
               <p className="text-base font-semibold">{quantity}</p>
-              <button className="p-1 bg-black text-white rounded-md">+</button>
+              <button onClick={handleDecrement} className="p-1 bg-black text-white rounded-md"><LuPlus className="text-sm" /></button>
             </div>
           </div>
         </div>
