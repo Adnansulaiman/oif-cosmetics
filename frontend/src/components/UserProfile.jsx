@@ -178,7 +178,7 @@ const UserProfile = () => {
 
   return (
     <>
-      <div className="flex flex-col w-2/5 bg-white rounded-xl">
+      <div className="flex flex-col w-full pb-5  md:w-2/5 bg-white rounded-xl">
         <div className="flex justify-between items-center mb-3 pt-6 pb-3 px-10 border-b border-slate-300">
           <h1 className="text-xl font-bold">Account Details</h1>
           <BiEdit
@@ -207,7 +207,7 @@ const UserProfile = () => {
           <p className="text-base">{userData?.phone || "----"}</p>
         </div>
       </div>
-      <div className="flex flex-col  w-2/5 bg-white rounded-xl">
+      <div className="flex flex-col w-full pb-5   md:w-2/5 bg-white rounded-xl">
         <div className="flex justify-between items-center mb-3 pt-6 pb-3 px-10 border-b border-slate-300">
           <h1 className="text-xl font-bold">Shipping Address</h1>
           <div className="flex gap-3">
@@ -273,12 +273,12 @@ const UserProfile = () => {
         )}
       </div>
       {accountOpen ||
-        (shippingOpen || warningOpen && (
-          <div className="absolute top-0 left-0 w-screen h-screen bg-gray backdrop-blur-md z-20"></div>
+        (shippingOpen && (
+          <div className="absolute top-0 left-0 w-screen h-full bg-gray backdrop-blur-md z-40"></div>
         ))}
 
       {accountOpen && (
-        <div className="absolute shadow-lg z-50 top-28 left-96 flex flex-col gap-10  bg-white w-1/2 rounded-2xl ">
+        <div className="absolute shadow-lg z-50 top-20 left-16 md:top-28  md:left-96 flex flex-col gap-10  bg-white w-3/4 md:w-1/2 rounded-2xl ">
           <div className="flex justify-between border-b border-slate-400 items-center pt-5 pb-3 px-10">
             <h1 className="text-2xl font-bold  ">Account Details</h1>
             <IoIosClose
@@ -288,7 +288,7 @@ const UserProfile = () => {
           </div>
           <form onSubmit={handleAccountSubmit}>
             <div className="flex flex-col gap-5 px-10">
-              <div className="flex gap-5">
+              <div className="flex flex-col md:flex-row gap-5">
                 <ProfileInput
                   type="text"
                   label="First name"
@@ -304,7 +304,7 @@ const UserProfile = () => {
                   onChange={handleAccountChange}
                 />
               </div>
-              <div className="flex gap-5">
+              <div className="flex flex-col md:flex-row gap-5">
                 <ProfileInput
                   type="date"
                   label="Date of Birth"
@@ -352,7 +352,7 @@ const UserProfile = () => {
                   </p>
                 </div>
               </div>
-              <div className="flex gap-40 mt-10">
+              <div className="flex gap-20 md:gap-40 mt-10">
                 <button
                   onClick={() => setAccountOpen(false)}
                   className="w-full mb-10 border border-black p-3 rounded-lg text-base font-semibold"
@@ -376,7 +376,7 @@ const UserProfile = () => {
         </div>
       )}
       {shippingOpen && (
-        <div className="absolute shadow-lg z-50 top-28 left-96 flex flex-col gap-10  bg-white w-1/2 rounded-2xl ">
+        <div className="absolute shadow-lg z-50 top-20 left-16 md:top-28 md:left-96 flex flex-col gap-10  bg-white w-3/4 md:w-1/2 rounded-2xl ">
           <div className="flex justify-between border-b border-slate-400 items-center pt-5 pb-3 px-10">
             <h1 className="text-2xl font-bold  ">Shipping Address</h1>
             <IoIosClose
@@ -393,7 +393,7 @@ const UserProfile = () => {
                 value={addressData.street}
                 onChange={handleAddressChange}
               />
-              <div className="flex gap-5">
+              <div className="flex flex-col md:flex-row gap-5">
                 <ProfileInput
                   type="text"
                   label="City"
@@ -409,7 +409,7 @@ const UserProfile = () => {
                   onChange={handleAddressChange}
                 />
               </div>
-              <div className="flex gap-5">
+              <div className="flex flex-col md:flex-row gap-5">
                 <ProfileInput
                   type="text"
                   label="Country"
@@ -426,7 +426,7 @@ const UserProfile = () => {
                 />
               </div>
 
-              <div className="flex gap-40 mt-10">
+              <div className="flex gap-20 md:gap-40 mt-10">
                 <button
                   onClick={() => setShippingOpen(false)}
                   className="w-full mb-10 border border-black p-3 rounded-lg text-base font-semibold"

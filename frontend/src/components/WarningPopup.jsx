@@ -2,7 +2,7 @@ import React from "react";
 
 const WarningPopup = ({text,setWarningOpen,button,handleAction,id}) => {
   return (
-    <div className="flex flex-col px-10 py-7 w-1/4 rounded-lg bg-white shadow-lg absolute z-50 top-64 left-[550px]">
+    <div className="flex flex-col px-10 py-7 md:w-1/4 rounded-lg bg-white shadow-lg absolute z-50  md:top-64 md:left-[550px]">
       <h1 className="text-xl font-semibold mb-7">
         {text}
       </h1>
