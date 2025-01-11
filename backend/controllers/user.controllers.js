@@ -97,7 +97,7 @@ const deleteAddress = async (req, res) => {
       return res.status(404).json({ message: "Address not found!" });
     } else {
       const newAddresses = user.address.filter(
-        (item) => item._id.toHexString() !== id
+        (item) => item._id.toString() !== id
       );
       console.log(newAddresses);
       user.address = newAddresses;
@@ -106,7 +106,7 @@ const deleteAddress = async (req, res) => {
         .status(200)
         .json({
           message: "Delete address successfully",
-          address: user.address,
+          user,
         });
     }
   } catch (error) {

@@ -6,6 +6,8 @@ import ProfileInput from "./ProfileInput";
 import { useAuth } from "../context/AuthContext";
 import useForm from "../hooks/useForm";
 import axios from "axios";
+import { MdDeleteOutline } from "react-icons/md";
+import WarningPopup from "./WarningPopup";
 
 const UserProfile = () => {
   const { userData, setUserData } = useAuth();
@@ -15,7 +17,7 @@ const UserProfile = () => {
   const [shippingOpen, setShippingOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editingAddressId, setEditingAddressId] = useState(null);
-
+  const [warningOpen,setWarningOpen] = useState(false);
   const openAddAddressPopup = () => {
     setShippingOpen(true);
     setIsEditing(false);
@@ -158,6 +160,21 @@ const UserProfile = () => {
     !addressData?.zip ||
     !addressData?.country;
 
+  const handleAddressDelete =async(id)=>{
+    try{
+      // console.log('Id : ',id)
+      const token = localStorage.getItem("token");
+      const response = await axios.delete(
+        `http://localhost:3000/api/user/delete-address/${id}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      console.log(response.data)
+      setUserData(response.data.user);
+    }catch(err){
+      console.log(err)
+    }
+
+  }
 
   return (
     <>
@@ -207,11 +224,21 @@ const UserProfile = () => {
         {userData?.address?.length ? (
           userData?.address?.map((addr) => (
             <div key={addr._id} className="flex flex-col">
-              <div className="flex justify-end px-10 mt-3">
+              <div className="flex justify-end px-10 mt-3 gap-1">
                 <BiEdit
                   className="text-xl cursor-pointer"
                   onClick={() => openEditAddressPopup(addr)}
                 />
+                <MdDeleteOutline
+                  className="text-xl cursor-pointer text-red-500"
+                  onClick={() => {
+                    // handleAddressDelete(addr._id)
+                    setWarningOpen(true);
+                  }}
+                />
+                  {warningOpen && (
+                    <WarningPopup text='Are you really want to delete?' setWarningOpen={setWarningOpen} handleAction={handleAddressDelete} button='Delete' id={addr?._id} />
+                  )}
               </div>
               <div className="flex flex-col border-b mx-10 pb-4 gap-4 pt-4 border-slate-500">
                 <div className="flex  text-slate-600 font-semibold  justify-between  items-center">
@@ -246,7 +273,7 @@ const UserProfile = () => {
         )}
       </div>
       {accountOpen ||
-        (shippingOpen && (
+        (shippingOpen || warningOpen && (
           <div className="absolute top-0 left-0 w-screen h-screen bg-gray backdrop-blur-md z-20"></div>
         ))}
 
@@ -422,6 +449,7 @@ const UserProfile = () => {
           </form>
         </div>
       )}
+      
     </>
   );
 };
