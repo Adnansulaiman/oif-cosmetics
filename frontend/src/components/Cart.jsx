@@ -5,13 +5,14 @@ import axios from "axios";
 import Loading from "./Loading";
 import ButtonLoading from "./ButtonLoading";
 import { useUserInfo } from "../context/userContext";
+import { Link } from "react-router-dom";
 
 const Cart = ({ setCartOpen }) => {
   // const {cartData,setCartData} = useUserInfo()
   // const [cartData, setCartData] = useState(null);
   // const [cartLoading, setLoading] = useState(true);
   const cartRef = useRef();
-  const {cartData,cartLoading} = useUserInfo()
+  const { cartData, cartLoading } = useUserInfo();
   console.log(cartData);
   // useEffect(() => {
   //   const handleClickOutside = (event) => {
@@ -51,7 +52,7 @@ const Cart = ({ setCartOpen }) => {
 
   // console.log(cartData);
 
-  console.log("Cart data",cartData)
+  console.log("Cart data", cartData);
   return (
     <>
       {cartLoading && (
@@ -72,8 +73,8 @@ const Cart = ({ setCartOpen }) => {
             />
           </div>
           <div className="w-full h-[60vh] overflow-y-auto no-scrollbar">
-            {console.log("Display this product : ",cartData)}
-            { cartData?.cartItems?.length > 0 ? (
+            {console.log("Display this product : ", cartData)}
+            {cartData?.cartItems?.length > 0 ? (
               cartData?.cartItems?.map((item) => (
                 <CartItem key={item.productId._id} item={item} />
               ))
@@ -88,10 +89,11 @@ const Cart = ({ setCartOpen }) => {
             <p className="text-lg font-bold">${cartData?.totalPrice}</p>
           </div>
         </div>
-
-        <div className="flex justify-center items-center rounded-2xl mb-10 mt- w-full h-16 cursor-pointer opacity-85 bg-black hover:opacity-100">
-          <p className="text-xl text-white font-bold">Check out</p>
-        </div>
+        <Link to="/checkout" onClick={()=> setCartOpen(false)}>
+          <div className="flex justify-center items-center rounded-2xl mb-10 mt- w-full h-16 cursor-pointer opacity-85 bg-black hover:opacity-100">
+            <p className="text-xl text-white font-bold">Check out</p>
+          </div>
+        </Link>
       </div>
     </>
   );
