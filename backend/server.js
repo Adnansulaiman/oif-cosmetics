@@ -2,12 +2,14 @@ const express = require('express');
 const path = require('path');
 require('dotenv').config()
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+
 const authRoutes = require('./routes/auth.routes');
 const productRoutes = require('./routes/product.routes');
 const cartRoutes = require('./routes/cart.routes');
 const userRoutes = require('./routes/user.routes');
-const orderRoutes = require('./routes/order.routes')
+const orderRoutes = require('./routes/order.routes');
+
 const cors = require('cors')
 const app = express();
 const PORT = process.env.PORT || 3000;

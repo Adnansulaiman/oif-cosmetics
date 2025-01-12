@@ -53,7 +53,7 @@ const CartItem = ({ item }) => {
 
   return (
     <Link to={`/product/${product?._id}`}>
-      <div className="flex mt-4 justify-between w-full border-b border-black border-opacity-40 pb-4">
+      <div className="flex mt-4 justify-between  w-full border-b border-black border-opacity-40 pb-4">
         <div className="flex gap-4">
           <img
             src={product?.images?.[0] || "default-image-url"}

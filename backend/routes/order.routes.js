@@ -4,6 +4,7 @@ const {
   getUserOrder,
   getAOrder,
   getAllOrders,
+  paymentIndegration,
 } = require("../controllers/order.controllers");
 const { protect, adminProtect } = require("../middlewares/authMiddleware");
 
