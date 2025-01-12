@@ -14,6 +14,8 @@ import Profile from "./pages/Profile";
 import UserProfile from "./components/UserProfile";
 import Security from "./components/Security";
 import Orders from "./pages/Orders";
+import Chekout from "./pages/Chekout";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -33,6 +35,8 @@ function App() {
           <Route path="/profile/orders" element={<Orders />} />
           <Route path="/profile/wishlist" element={<Wishlist />} />
         </Route>
+        <Route path="/checkout" element={<Chekout />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );
