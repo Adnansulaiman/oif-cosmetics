@@ -89,11 +89,20 @@ const Cart = ({ setCartOpen }) => {
             <p className="text-lg font-bold">${cartData?.totalPrice}</p>
           </div>
         </div>
-        <Link to="/checkout" onClick={()=> setCartOpen(false)}>
+        {cartData?.cartItems?.length > 0 ? (
+          <Link to="/checkout" onClick={()=> setCartOpen(false)}>
           <div className="flex justify-center items-center rounded-2xl mb-10 mt- w-full h-16 cursor-pointer opacity-85 bg-black hover:opacity-100">
             <p className="text-xl text-white font-bold">Check out</p>
           </div>
         </Link>
+        ) : 
+        <Link >
+          <div className="flex justify-center items-center rounded-2xl mb-10 mt- w-full h-16 cursor-pointer opacity-85 bg-black hover:opacity-100">
+            <p className="text-xl text-white font-bold">Check out</p>
+          </div>
+        </Link>
+        }
+        
       </div>
     </>
   );

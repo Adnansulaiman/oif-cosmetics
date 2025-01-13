@@ -13,6 +13,7 @@ const router = express.Router();
 router.post("/",protect, billingProcess);
 router.get("/",protect, getUserOrder);
 router.get("/:id",protect, getAOrder);
+router.post("/payment",protect, paymentIndegration);
 router.get("/admin/orders",protect,adminProtect, getAllOrders);
 
 module.exports = router;

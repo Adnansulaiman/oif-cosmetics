@@ -17,6 +17,7 @@ import Orders from "./pages/Orders";
 // import Chekout from "./pages/Chekout";
 import NotFound from "./pages/NotFound";
 import Checkout from "./pages/Checkout";
+import StripeContainer from "./components/StripeContainer";
 
 function App() {
   return (
@@ -36,7 +37,14 @@ function App() {
           <Route path="/profile/orders" element={<Orders />} />
           <Route path="/profile/wishlist" element={<Wishlist />} />
         </Route>
-        <Route path="/checkout" element={<Checkout />} />
+        <Route
+          path="/checkout"
+          element={
+            <StripeContainer>
+              <Checkout />{" "}
+            </StripeContainer>
+          }
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

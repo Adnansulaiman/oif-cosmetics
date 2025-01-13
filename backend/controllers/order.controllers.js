@@ -1,6 +1,7 @@
 const Order = require('../models/Order');
 const User = require('../models/User');
-
+const Stripe = require('stripe');
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
 
 const billingProcess = async(req,res) =>{
 
@@ -59,12 +60,31 @@ const getAllOrders = async(req,res) =>{
         res.status(500).json({message:"Error while fetching orders"})
     }
 }
+const paymentIndegration = async(req,res) =>{
+    const { amount } = req.body;
 
+    try {
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount:amount * 100, // Convert amount to cents (Stripe requires smallest currency unit)
+            currency: 'usd',
+        });
+
+        res.json({
+            clientSecret: paymentIntent.client_secret,
+            paymentId: paymentIntent.id, // Transaction ID
+            status: paymentIntent.status, // Status (requires confirmation on frontend)
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Payment failed' });
+    }
+}
 module.exports = {
     billingProcess,
     getAOrder,
     getUserOrder,
     getAllOrders,
+    paymentIndegration
 }
 
 

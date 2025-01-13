@@ -74,7 +74,7 @@ const resetCart = async (req,res) =>{
         user.cart.cartItems = [];
         user.cart.totalPrice = 0;
         await user.save()
-        res.status(200).json({message:"Successfully remove cart",user})
+        res.status(200).json({message:"Successfully remove cart",cart:user.cart})
     }catch(error){
         res.status(500).json({message:"Error to reset cart"})
     }

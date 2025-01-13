@@ -6,14 +6,60 @@ import { useAuth } from "../context/AuthContext";
 import useForm from "../hooks/useForm";
 import { useUserInfo } from "../context/userContext";
 import axios from "axios";
-import SuccessImage from '../assets/images/check.png'
+import SuccessImage from "../assets/images/check.png";
 import { Link } from "react-router-dom";
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+
 const Checkout = () => {
+  //payment indegration
+  const stripe = useStripe();
+  const elements = useElements();
+  const [paymentStatus, setPaymentStatus] = useState("");
+  const [paymentOpen,setPaymentOpen ] = useState(false);
+
+  
+  const handlePayment = async () => {
+    try {
+    // Fetch clientSecret from the backend
+    const token = localStorage.getItem('token');
+    const response = await axios.post(
+      "http://localhost:3000/api/order/payment",
+      {
+        amount: cartData?.totalPrice + shippingPrice,
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    const { clientSecret } = response.data;
+
+    // Confirm the payment
+    const { error, paymentIntent } = await stripe.confirmCardPayment(
+      clientSecret,
+      {
+        payment_method: {
+          card: elements.getElement(CardElement),
+        },
+      }
+    );
+
+    if (error) {
+      console.error(error);
+      setPaymentStatus("Payment failed");
+    } else if (paymentIntent.status === "succeeded") {
+      console.log("Transaction ID:", paymentIntent.id);
+      setPaymentOpen(false); // Close payment popup
+      setSuccessOrder(true); // Show success popup
+    }
+  } catch (err) {
+    console.log(err);
+    setPaymentStatus("Payment failed");
+  }
+  };
 
   const { userData } = useAuth();
   console.log("user data : ", userData);
-  const {cartData} = useUserInfo()
-  console.log(cartData)
+  const { cartData,clearCart } = useUserInfo();
+  console.log(cartData);
   const {
     values: formData,
     handleChange,
@@ -47,52 +93,61 @@ const Checkout = () => {
     }
   }, [userData, setValues]);
   console.log("formData:", formData);
-  const [successOrder,setSuccessOrder] = useState(false);
+  const [successOrder, setSuccessOrder] = useState(false);
   const [checkoutStatus, setCheckoutStatus] = useState("address");
   const [paymentMethod, setPaymentMethod] = useState("online");
-  const [shippingPrice,setShippingPrice] = useState(0);
+  const [shippingPrice, setShippingPrice] = useState(0);
+
   useEffect(() => {
     if (cartData?.totalPrice !== undefined) {
       setShippingPrice(cartData.totalPrice > 100 ? 0 : 10);
     }
   }, [cartData?.totalPrice]);
-  const handleOrderSubmit =async (e) =>{
+
+  const handleOrderSubmit = async (e) => {
     e.preventDefault();
     // console.log("Submit successfully")
-    try{
-      const token = localStorage.getItem('token');
-      const orderItems = cartData.cartItems.map(item => ({
+    if(paymentMethod === 'online'){
+      setPaymentOpen(true);
+      return;
+    }
+    try {
+      const token = localStorage.getItem("token");
+      const orderItems = cartData.cartItems.map((item) => ({
         productId: item.productId._id, // Get the product ID
-        quantity: item.quantity,      // Get the quantity
+        quantity: item.quantity, // Get the quantity
       }));
-      const response = await axios.post(`http://localhost:3000/api/order/`,
+      const response = await axios.post(
+        `http://localhost:3000/api/order/`,
         {
-          user_id:userData?._id,
-          order_items:orderItems, 
-          shipping_address:{
-            street:formData?.street,
-            city:formData?.city,
-            country:formData?.country,
-            state:formData?.state,
-            zip:formData?.zip,
+          user_id: userData?._id,
+          order_items: orderItems,
+          shipping_address: {
+            street: formData?.street,
+            city: formData?.city,
+            country: formData?.country,
+            state: formData?.state,
+            zip: formData?.zip,
           },
           total_price: cartData?.totalPrice + shippingPrice,
-          payment_method:paymentMethod
+          payment_method: paymentMethod,
         },
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
-        // console.log("Order placed successfully",response.data);
-        if(response.data){
-          setSuccessOrder(true);
         }
-        resetForm();
-    }catch(err){
-      console.log(err)
+      );
+      // console.log("Order placed successfully",response.data);
+      if (response.data) {
+        setSuccessOrder(true);
+        clearCart();
+      }
+      resetForm();
+    } catch (err) {
+      console.log(err);
     }
-  }
+  };
 
   return (
     <>
@@ -290,6 +345,24 @@ const Checkout = () => {
           )}
         </form>
       </div>
+      {paymentOpen && paymentMethod === "online" && (
+        <div className=" flex justify-center items-center absolute top-0 left-0 w-full h-screen bg-gray-100 backdrop:blur-md">
+        <div className="flex flex-col w-1/2">
+          <div className="mt-10">
+            <CardElement className="border p-4 rounded" />
+          </div>
+          <div className="flex justify-end mt-10">
+            <button
+              type="button"
+              onClick={handlePayment}
+              className="text-xl font-semibold bg-black text-white px-16 py-3 rounded-lg"
+            >
+              Pay Now
+            </button>
+          </div>
+        </div>
+        </div>
+      )}
       {successOrder && (
         <div className="absolute flex justify-center items-center bg-green-500 top-0 left-0 w-full h-full z-50 ">
           <div className=" flex flex-col justify-center rounded-2xl items-center shadow-slate-600 py-10 shadow-sm bg-white w-2/5">

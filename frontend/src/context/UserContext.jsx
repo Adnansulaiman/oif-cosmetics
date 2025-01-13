@@ -50,6 +50,20 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+
+  const clearCart = async () =>{
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.delete(
+        `http://localhost:3000/api/cart/resetcart`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      console.log("Reset cart!")
+      setCartData(response.data.cart);
+    } catch (err) {
+      console.error("Error reseting cart:", err);
+    }
+  }
   const removeFromCart = async (productId) => {
     try {
       const token = localStorage.getItem("token");
@@ -93,7 +107,7 @@ export const UserProvider = ({ children }) => {
   }
   return (
     <UserContext.Provider
-    value={{ wishlistData, cartData, cartLoading, addToCart, removeFromCart ,incrementQuantity,decrementQuantity}}
+    value={{ wishlistData, cartData, cartLoading, addToCart, removeFromCart ,incrementQuantity,decrementQuantity,clearCart}}
   >
     {children}
   </UserContext.Provider>
