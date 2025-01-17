@@ -2,6 +2,7 @@ const User = require("../models/User");
 const Product = require("../models/Product");
 const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
+const bcrypt = require("bcrypt");
 
 
 const getUserDetails = async (req, res) => {
@@ -239,6 +240,28 @@ const deleteUserImage = async(req,res) =>{
     console.log(err);
   }
 }
+const changePassword = async(req,res) =>{
+  const {currentPassword,newPassword,confirmPassword} = req.body;
+  try{
+    const user = await User.findById(req.user.id);
+    if(!user){
+      return res.status(404).json({message:"User not found!"})
+    }
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid current password , try again!" });
+    }
+    if(newPassword !== confirmPassword){
+      return res.status(400).json({ message: "Password is not same ,try again!" });
+    }
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+    res.status(200).json({message:"Password successfully changed",user});
+  }catch(err){
+    console.log(err)
+  }
+}
 module.exports = {
   getUserDetails,
   updateUserDetails,
@@ -249,5 +272,6 @@ module.exports = {
   viewWishlist,
   deleteWishlist,
   uploadUserImage,
-  deleteUserImage
+  deleteUserImage,
+  changePassword
 };

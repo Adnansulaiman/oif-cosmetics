@@ -27,7 +27,7 @@ const Orders = () => {
  
 
   return (
-    <div className="py-16 md:py-28  md:px-16 bg-white w-full rounded-xl">
+    <div className="py-16 md:py-28  md:px-16 bg-white w-4/5 rounded-xl">
       <div className="flex flex-col px-8 py-5">
         <h1 className="text-2xl md:text-3xl font-bold pb-3 md:pb-5 ">My Orders</h1>
         {orderData?.map(data => (
