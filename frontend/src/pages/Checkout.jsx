@@ -123,6 +123,10 @@ const Checkout = () => {
           user_id: userData?._id,
           order_items: orderItems,
           shipping_address: {
+            firstName:formData?.firstName,
+            lastName:formData?.lastName,
+            phone:formData?.phone,
+            email:formData?.email,
             street: formData?.street,
             city: formData?.city,
             country: formData?.country,
@@ -138,7 +142,7 @@ const Checkout = () => {
           },
         }
       );
-      // console.log("Order placed successfully",response.data);
+      console.log("Order placed successfully",response.data);
       if (response.data) {
         setSuccessOrder(true);
         clearCart();
@@ -151,15 +155,15 @@ const Checkout = () => {
 
   return (
     <>
-      <div className="pt-28 px-16">
+      <div className="pt-20 px-6 md:pt-28 md:px-16">
         <div className=""></div>
         <form onSubmit={handleOrderSubmit}>
           {checkoutStatus === "address" && (
-            <div className="flex flex-col">
+            <div className="flex flex-col ">
               <h1 className="text-4xl font-bold text-center">
                 Address Details
               </h1>
-              <div className="flex gap-20 mt-10 ">
+              <div className="flex  flex-col md:flex-row gap-10 md:gap-10 mt-10 ">
                 <div className=" gap-3 flex w-full flex-col">
                   <h1 className="text-2xl mb-2  font-semibold">User Details</h1>
                   <ProfileInput
@@ -216,7 +220,7 @@ const Checkout = () => {
                     value={formData?.city}
                     onChange={handleChange}
                   />
-                  <div className="flex gap-5">
+                  <div className="flex flex-col md:flex-row gap-5">
                     <ProfileInput
                       label="Country"
                       type="text"
@@ -234,10 +238,10 @@ const Checkout = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex justify-end mt-10">
+              <div className="flex justify-end mt-10 mb-10">
                 <button
                   onClick={() => setCheckoutStatus("payment")}
-                  className="text-xl flex justify-center items-center gap-3 font-semibold bg-black text-white px-16 py-3 rounded-lg"
+                  className="text-xl flex justify-center items-center gap-3 font-semibold bg-black text-white px-8  md:px-16 py-3 rounded-lg"
                 >
                   Next
                   <BsArrowRight className="text-2xl mt-" />
@@ -248,10 +252,10 @@ const Checkout = () => {
           {checkoutStatus === "payment" && (
             <div className="flex flex-col">
               <h1 className="text-4xl font-bold text-center">Payment Method</h1>
-              <div className="flex justify-center mt-20 gap-10">
+              <div className="flex  text-center justify-center mt-20 gap-5 md:gap-10">
                 <div
                   onClick={() => setPaymentMethod("online")}
-                  className={`cursor-pointer text-2xl font-semibold border-2 border-black rounded-lg px-20 py-5 ${
+                  className={`cursor-pointer text-2xl font-semibold border-2 border-black rounded-lg px-10 md:px-20 py-5 ${
                     paymentMethod === "online" &&
                     "ring-2 ring-black ring-offset-2"
                   }`}
@@ -260,24 +264,24 @@ const Checkout = () => {
                 </div>
                 <div
                   onClick={() => setPaymentMethod("cod")}
-                  className={`cursor-pointer text-2xl font-semibold border-2 border-black rounded-lg px-20 py-5 ${
+                  className={`cursor-pointer text-2xl font-semibold border-2 border-black rounded-lg px-10 md:px-20 py-5 ${
                     paymentMethod === "cod" && "ring-2 ring-black ring-offset-2"
                   }`}
                 >
                   COD
                 </div>
               </div>
-              <div className="flex h-80 items-end justify-between mt-10">
+              <div className="flex h-32 md:h-80 items-end justify-between mt-10">
                 <button
                   onClick={() => setCheckoutStatus("address")}
-                  className="text-xl flex justify-center items-center gap-3 font-semibold bg-transparent text-black border border-black px-16 py-3 rounded-lg"
+                  className="text-xl flex justify-center items-center gap-3 font-semibold bg-transparent text-black border border-black px-8 md:px-16 py-3 rounded-lg"
                 >
                   <BsArrowLeft className="text-2xl mt-" />
-                  Previous
+                  Back
                 </button>
                 <button
                   onClick={() => setCheckoutStatus("summery")}
-                  className="text-xl flex justify-center items-center gap-3 font-semibold bg-black text-white px-16 py-3 rounded-lg"
+                  className="text-xl flex justify-center items-center gap-3 font-semibold bg-black text-white px-8 md:px-16 py-3 rounded-lg"
                 >
                   Next
                   <BsArrowRight className="text-2xl mt-" />
@@ -289,14 +293,14 @@ const Checkout = () => {
             <div className="flex flex-col">
               <h1 className="text-4xl font-bold text-center">Order Summery</h1>
               <div className="flex mt-3 items-center flex-col ">
-                <div className="flex flex-col w-1/2 h-[42vh] overflow-y-auto no-scrollbar ">
+                <div className="flex flex-col w-full md:w-1/2 h-[42vh] overflow-y-auto no-scrollbar ">
                   {cartData?.cartItems?.length > 0 &&
                     cartData?.cartItems?.map((item) => (
                       <CartItem key={item.productId._id} item={item} />
                     ))}
                 </div>
 
-                <div className="flex flex-col w-1/2  ">
+                <div className="flex flex-col w-full  md:w-1/2  ">
                   <div className=" flex justify-between border-t border-slate-400 pt-6">
                     <p className="text-lg font-semibold text-slate-500">
                       Subtotal
@@ -322,7 +326,7 @@ const Checkout = () => {
                     </p>
                   </div>
                 </div>
-                <div className="text-center flex items-center mt-5 w-1/2 justify-center">
+                <div className="text-center flex items-center mt-5 w-full md:w-1/2 justify-center">
                   <button
                     type="submit"
                     className="bg-black w-full py-4 rounded-md text-xl font-bold text-white"
@@ -332,13 +336,13 @@ const Checkout = () => {
                 </div>
               </div>
 
-              <div className="flex h-8 items-end justify-between mt-10">
+              <div className="flex h-8 items-end justify-between mt-20">
                 <button
                   onClick={() => setCheckoutStatus("payment")}
-                  className="text-xl flex justify-center items-center gap-3 font-semibold bg-transparent text-black border border-black px-16 py-3 rounded-lg"
+                  className="text-xl flex justify-center items-center gap-3 font-semibold bg-transparent text-black border border-black px-8 md:px-16 py-3 rounded-lg"
                 >
                   <BsArrowLeft className="text-2xl " />
-                  Previous
+                  Back
                 </button>
               </div>
             </div>
@@ -364,7 +368,7 @@ const Checkout = () => {
         </div>
       )}
       {successOrder && (
-        <div className="absolute flex justify-center items-center bg-green-500 top-0 left-0 w-full h-full z-50 ">
+        <div className="absolute flex justify-center items-center bg-green-500 top-0 left-0 w-full h-[111vh] z-50 ">
           <div className=" flex flex-col justify-center rounded-2xl items-center shadow-slate-600 py-10 shadow-sm bg-white w-2/5">
             <img src={SuccessImage} className="w-24" alt="success image" />
             <h1 className="text-4xl text-slate-900 font-medium mt-4">

@@ -13,10 +13,12 @@ import { CiLogin, CiLogout, CiSettings } from "react-icons/ci";
 import { useAuth } from "../context/AuthContext";
 import Cart from "./Cart";
 import { useUserInfo } from "../context/userContext";
+import WarningPopup from "./WarningPopup";
 
 const Navbar = () => {
   const {cartData} = useUserInfo()
   const [cartOpen, setCartOpen] = useState(false);
+  const [warningOpen,setWarningOpen] = useState(false);
 
   const { logout, loggedIn, getUserData,userData } = useAuth();
   const navigate = useNavigate();
@@ -71,7 +73,7 @@ const Navbar = () => {
         className=" hidden md:flex fixed z-50 text-black bg-gray-400 mt-4 mx-0 px-4 rounded-xl 
     justify-between items-center w-[calc(100%-6rem)] left-12 h-16 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-20"
       >
-        <ul className="flex gap-8 items-center ">
+        <ul className="flex gap-8  items-center ">
           <NavLink
             to="/"
             style={({ isActive }) => (isActive ? { fontWeight: "bold" } : null)}
@@ -116,7 +118,7 @@ const Navbar = () => {
           )}
           {!loggedIn && (
             <Link to="/login">
-              <p className="hover:scale-110">Login</p>
+              <p className="border bg-black text-white font-semibold border-black px-8 py-2 rounded-md">Login</p>
             </Link>
           )}
           <div className="flex gap-2 items-center ">
@@ -137,12 +139,12 @@ const Navbar = () => {
       ></div>
     )} */}
       {cartOpen && <Cart setCartOpen={setCartOpen} />}
-      {profileOpen && (
+      {profileOpen  && (
         <div
           ref={profileRef}
           className="absolute rounded-2xl top-14 right-0 flex flex-col w-1/6 h-72 px-4 py-6 justify-between bg-white z-50"
         >
-          <div className="flex border-b pb-3 border-opacity-30 border-black flex-col gap-2  items-center ">
+          <div className="flex  border-b pb-3 border-opacity-30 border-black flex-col gap-2  items-center ">
             <Link to="/profile">
               <img
                 src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
@@ -158,20 +160,24 @@ const Navbar = () => {
              onClick={() => setOpenMenu(false)}>
               <li>Wishlist</li>
             </Link>
+            <Link to='/orders'
+             onClick={() => setOpenMenu(false)}>
+              <li>Orders</li>
+            </Link>
           </ul>
           <div className="flex px-4 flex-col pt-3 border-t border-black border-opacity-40">
-            <Link>
+            {/* <Link>
               <p className="flex  items-center">
                 Settings <CiSettings className="text-lg mt-1 " />
               </p>
-            </Link>
+            </Link> */}
             {loggedIn && (
               <Link
                 onClick={() => {
-                  handleLogout(), setProfileOpen(false);
+                 setWarningOpen(true) , setProfileOpen(false);
                 }}
               >
-                <p className="flex items-center">
+                <p className="flex items-center text-red-500">
                   Logout
                   <CiLogin className="text-lg mt-1" />
                 </p>
@@ -199,9 +205,14 @@ const Navbar = () => {
               <span className="bg-black w-3 h-3 text-white flex justify-center items-center -top-0 -right-1 rounded-full absolute text-[10px]">{cartData?.cartItems?.length}</span>
             </Link>
           )}
-          {!loggedIn && (
+          {/* {!loggedIn && (
             <Link to="/login">
               <CiLogin className="text-2xl cursor-pointer" />
+            </Link>
+          )} */}
+          {!loggedIn && (
+            <Link to="/login">
+              <p className="border bg-black text-white font-semibold border-black px-8 py-2 rounded-md">Login</p>
             </Link>
           )}
           <IoMenu
@@ -226,19 +237,21 @@ const Navbar = () => {
                 }}
               />
             </div>
+            {loggedIn && (
             <div className="flex border-b pb-1 border-opacity-30 border-black flex-col  items-center ">
-              <Link to="/profile">
+              
+                <Link to="/profile">
                 <img
                   src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
                   alt=""
                   className="w-6 h-6 rounded-full hover:border-2 hover:border-black"
                 />
               </Link>
-              <p>
+              
               <p>{userData ? userData?.firstName + " " + userData?.lastName : "Profile"}</p>
 
-              </p>
             </div>
+            )}
             <ul className="flex px-4 py-2 flex-col  gap-2">
               <NavLink
                 to="/"
@@ -311,19 +324,19 @@ const Navbar = () => {
 
           
 
-          <div className="flex px-4 flex-col border-t border-black border-opacity-40">
-            <Link>
+          <div className="flex pb-5 pt-3 gap-2 px-4 flex-col border-t border-black border-opacity-40">
+            {/* <Link>
               <p className="flex  items-center">
                 Settings <CiSettings className="text-lg mt-1 " />
               </p>
-            </Link>
+            </Link> */}
             {loggedIn && (
               <Link
                 onClick={() => {
-                  handleLogout(), setOpenMenu(false);
+                  setWarningOpen(true), setOpenMenu(false);
                 }}
               >
-                <p className="flex items-center">
+                <p className="flex items-center gap-1 text-red-500">
                   Logout
                   <CiLogin className="text-lg mt-1" />
                 </p>
@@ -341,6 +354,11 @@ const Navbar = () => {
           className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 backdrop-filter backdrop-blur-sm z-40"
           onClick={() => setCartOpen(false)} // Close cart on overlay click
         ></div>
+      )}
+      {warningOpen && (
+        <div className="flex justify-center items-center w-full h-screen">
+        <WarningPopup text="Are you really want to logout?" button='Logout' setWarningOpen={setWarningOpen} handleAction={handleLogout} />
+        </div>
       )}
     </>
   );

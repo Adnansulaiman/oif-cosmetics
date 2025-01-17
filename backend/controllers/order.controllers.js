@@ -11,6 +11,7 @@ const billingProcess = async(req,res) =>{
             return res.status(404).json({message:"User not found"});
         }
         const order = new Order(req.body);
+        await order.save();
         res.status(200).json({message:"Added order details",order})
     }catch(error){
         res.status(500).json({message:"Error while adding order details"});
@@ -41,11 +42,9 @@ const getUserOrder = async(req,res)=>{
             return res.status(404).json({message:"User not found"});
 
         }
-        const orders = await Order.findById(req.user.id);
-        if(!orders){
-            return res.status(404).json({message:"Orders not found"});
-
-        }
+        const orders = await Order.find({ user_id: req.user.id })
+        .populate('order_items.productId', 'name price description')
+        .sort({ createdAt: -1 });
         res.status(200).json(orders);
     }catch(error){
         res.status(500).json({message:"Error while fetching user orders"});

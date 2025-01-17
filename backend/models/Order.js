@@ -21,6 +21,22 @@ const orderSchema = new mongoose.Schema({
     },
     order_items:[orderItemSchema],
     shipping_address:{
+        firstName:{
+            type:String,
+            required:true
+        },
+        lastName:{
+            type:String,
+            required:true
+        },
+        email:{
+            type:String,
+            required:true
+        },
+        phone:{
+            type:Number,
+            required:true
+        },
         street:{
             type:String,
             required:true
@@ -62,9 +78,9 @@ const orderSchema = new mongoose.Schema({
     },
     payment_result:{
         trans_id:String,
-        status:String,
         paidAt:String
-    }
+    },
+ 
 },
 {
     timestamps:true

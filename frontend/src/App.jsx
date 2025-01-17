@@ -30,6 +30,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<SignUp />} />
         <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/orders" element={<Orders />} />
         <Route path="/product/:prodId" element={<SingleProduct />} />
         <Route path="/profile" element={<Profile />}>
           <Route path="/profile/" element={<UserProfile />} />
