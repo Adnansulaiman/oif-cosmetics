@@ -1,4 +1,5 @@
 const express = require("express");
+const upload = require('../uploads/multer.config')
 
 const {
   getUserDetails,
@@ -9,6 +10,8 @@ const {
   addToWishlist,
   viewWishlist,
   deleteWishlist,
+  uploadUserImage,
+  deleteUserImage,
 } = require("../controllers/user.controllers");
 const { protect } = require("../middlewares/authMiddleware");
 
@@ -22,6 +25,8 @@ router.delete("/delete-address/:id", protect, deleteAddress);
 router.post('/wishlist/:id',protect,addToWishlist)
 router.get('/wishlist/',protect,viewWishlist)
 router.delete('/wishlist/:id',protect,deleteWishlist)
+router.put('/upload-image',protect,upload.single('profileImage'),uploadUserImage)
+router.delete('/delete-image',protect,deleteUserImage)
 
 
 

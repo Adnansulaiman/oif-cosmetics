@@ -1,5 +1,8 @@
 const User = require("../models/User");
 const Product = require("../models/Product");
+const cloudinary = require('cloudinary').v2;
+const fs = require('fs');
+
 
 const getUserDetails = async (req, res) => {
   try {
@@ -178,6 +181,64 @@ const deleteWishlist = async(req,res)=>{
   }
 }
 
+const uploadUserImage = async(req,res) =>{
+  try{
+     // Cloudinary configuration
+     cloudinary.config({
+      cloud_name: process.env.CLOUD_NAME,
+      api_key: process.env.CLOUD_API_KEY,
+      api_secret: process.env.CLOUD_API_SECRET,
+    });
+
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
+
+    const filePath = req.file.path;
+
+    // Upload image to Cloudinary
+    const result = await cloudinary.uploader.upload(filePath, {
+      transformation: [
+        { quality: 'auto', fetch_format: 'auto' },
+        { width: 300, height: 300, crop: 'fill', gravity: 'face' } // Optional: Resize and crop
+      ],
+    });
+
+    // Remove file from local storage
+    fs.unlinkSync(filePath);
+    
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      {
+        image:result.secure_url
+      },
+      {new:true}
+    );
+    if(!user){
+      return res.status(404).json({message:"User not found!"})
+    }
+    res.status(200).json({
+      message: 'Profile image updated successfully',
+      user,
+    });
+
+  }catch(err){
+    console.log(err);
+  }
+}
+const deleteUserImage = async(req,res) =>{
+  try{
+    const user = await User.findById(req.user.id);
+    if(!user){
+      return res.status(404).json({message:"User not found!"})
+    }
+    user.image ='';
+    await user.save();
+    res.status(200).json({message:"Delete the user profile image",user})
+  }catch(err){
+    console.log(err);
+  }
+}
 module.exports = {
   getUserDetails,
   updateUserDetails,
@@ -186,5 +247,7 @@ module.exports = {
   deleteAddress,
   addToWishlist,
   viewWishlist,
-  deleteWishlist
+  deleteWishlist,
+  uploadUserImage,
+  deleteUserImage
 };

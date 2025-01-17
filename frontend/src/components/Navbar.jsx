@@ -125,7 +125,7 @@ const Navbar = () => {
             <p>{userData ? userData?.firstName + " " + userData?.lastName : ""}</p>
             <Link onClick={() => setProfileOpen(!profileOpen)}>
               <img
-                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                src={userData?.image || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
                 alt=""
                 className="w-6 h-6 rounded-full hover:border-2 hover:border-black"
               />
@@ -147,7 +147,7 @@ const Navbar = () => {
           <div className="flex  border-b pb-3 border-opacity-30 border-black flex-col gap-2  items-center ">
             <Link to="/profile">
               <img
-                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                src={userData?.image || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
                 alt=""
                 className="w-6 h-6 rounded-full hover:border-2 hover:border-black"
               />
@@ -243,8 +243,8 @@ const Navbar = () => {
                 <Link to="/profile"
                 onClick={()=> setOpenMenu(false)}>
                 <img
-                  src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                  alt=""
+                src={userData?.image || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                alt=""
                   className="w-6 h-6 rounded-full hover:border-2 hover:border-black"
                 />
               </Link>

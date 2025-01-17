@@ -41,6 +41,38 @@ const getAProduct = async(req,res)=>{
 const addProduct = async(req,res)=>{
    
    try{
+    //  // Cloudinary configuration
+    //  cloudinary.config({
+    //     cloud_name: process.env.CLOUD_NAME,
+    //     api_key: process.env.CLOUD_API_KEY,
+    //     api_secret: process.env.CLOUD_API_SECRET,
+    //   });
+  
+    //   // Get file paths from multer
+    //   const filePaths = req.files.map((file) => file.path);
+  
+    //   // Upload images to Cloudinary
+    //   const urls = await Promise.all(
+    //     filePaths.map(async (filePath) => {
+    //       const result = await cloudinary.uploader.upload(filePath, {
+    //         transformation: [
+    //           { quality: 'auto', fetch_format: 'auto' },
+    //           // { width: 1200, height: 1200, crop: 'fill', gravity: 'auto' }
+    //         ],
+    //       });
+    //       // Remove the file from local storage after upload
+    //       fs.unlinkSync(filePath);
+    //       return cloudinary.url(result.public_id);
+    //     })
+    //   );
+  
+    //   // Add new product with images URLs
+    //   const newProduct = new Product({
+    //     ...req.body,
+    //     images: urls, // Add uploaded URLs to the product
+    //   });
+  
+    //   await newProduct.save();
     const newProduct = new Product(req.body);
     newProduct.save();
     console.log('Added new Product');
