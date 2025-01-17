@@ -368,10 +368,10 @@ const Checkout = () => {
         </div>
       )}
       {successOrder && (
-        <div className="absolute flex justify-center items-center bg-green-500 top-0 left-0 w-full h-[111vh] z-50 ">
-          <div className=" flex flex-col justify-center rounded-2xl items-center shadow-slate-600 py-10 shadow-sm bg-white w-2/5">
-            <img src={SuccessImage} className="w-24" alt="success image" />
-            <h1 className="text-4xl text-slate-900 font-medium mt-4">
+        <div className="absolute flex justify-center items-center bg-green-500 top-0 left-0 w-full h-[111vh] z-40 ">
+          <div className=" flex flex-col justify-center rounded-2xl items-center shadow-slate-600 py-10 shadow-sm bg-white w-full mx-10 md:w-2/5">
+            <img src={SuccessImage} className="w-16 md:w-24" alt="success image" />
+            <h1 className="text-3xl md:text-4xl text-slate-900 font-medium mt-4">
               Wooohoo!
             </h1>
             <p className="text-xl text-slate-600 font-medium">

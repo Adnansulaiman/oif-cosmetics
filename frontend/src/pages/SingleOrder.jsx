@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams,Link } from "react-router-dom";
 import moment from "moment-timezone";
 const SingleOrder = () => {
   const { id } = useParams();
@@ -32,16 +32,17 @@ const SingleOrder = () => {
       .format("DD MMM YYYY [at] hh:mm:ss A");
   };
   return (
-    <div className="flex items-center flex-col  py-28 px-16">
-      <div className="flex flex-col w-1/2 gap-10">
+    <div className="flex items-center flex-col py-28 px-6 md:px-16">
+      <div className="flex flex-col w-full md:w-1/2 gap-10">
         <div className="flex justify-center  ">
-          <h1 className=" text-3xl font-bold">{`OrderID : #${id}`} </h1>
+          <h1 className="text-xl md:text-3xl font-bold">{`OrderID : #${id}`} </h1>
         </div>
         <div className="flex flex-col gap-5 text-slate-800 ">
           <div className="flex flex-col">
           {orderData?.order_items?.map((item) => (
+            <Link key={item?._id} to={`/product/${item?.productId?._id}`}>
             <div
-              key={item?._id}
+              
               className="flex gap-5 border-b border-slate-300 py-3  "
             >
               <img
@@ -50,10 +51,10 @@ const SingleOrder = () => {
                 className="w-28 rounded-lg"
               />
               <div className="flex flex-col justify-center ">
-                <h1 className="text-xl font-semibold">
+                <h1 className="text-lg md:text-xl font-semibold">
                   {item?.productId?.name}
                 </h1>
-                <p className="text- font-medium text-slate-600">
+                <p className="text-base font-medium text-slate-600">
                   {item?.productId?.brand}
                 </p>
                 <p className="text- font-medium text-slate-600">
@@ -64,6 +65,7 @@ const SingleOrder = () => {
                 </p>
               </div>
             </div>
+            </Link>
           ))}
           </div>
           <div className="flex flex-col gap-3 border-b border-slate-300 py-3">
@@ -86,7 +88,7 @@ const SingleOrder = () => {
             </div>
             <div className="flex justify-between">
               <p className="text-xl font-semibold">Order Placed At : </p>
-              <p className="text-xl font-semibold">
+              <p className="text-lg md:text-xl font-semibold">
                 {formatDateToIST(orderData?.createdAt)}
               </p>
             </div>

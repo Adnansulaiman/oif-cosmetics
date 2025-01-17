@@ -189,7 +189,7 @@ const Navbar = () => {
       </div>
       {/* Navbar Mobile */}
       <div className="flex  justify-between w-[calc(100%-1rem)] items-center md:hidden my-3 px-5 fixed z-50 py-3 mx-2 rounded-lg bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-20">
-        <h1 className="text-2xl font-black">OIF.</h1>
+        <Link to='/'><h1 className="text-2xl font-black">OIF.</h1></Link>
         <div className="flex gap-4 items-center">
           <Link>
             <IoIosSearch className="text-2xl " />
@@ -240,7 +240,8 @@ const Navbar = () => {
             {loggedIn && (
             <div className="flex border-b pb-1 border-opacity-30 border-black flex-col  items-center ">
               
-                <Link to="/profile">
+                <Link to="/profile"
+                onClick={()=> setOpenMenu(false)}>
                 <img
                   src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
                   alt=""
@@ -318,6 +319,10 @@ const Navbar = () => {
             <Link to='/wishlist'
              onClick={() => setOpenMenu(false)}>
               <li>Wishlist</li>
+            </Link>
+            <Link to='/orders'
+             onClick={() => setOpenMenu(false)}>
+              <li>Orders</li>
             </Link>
           </ul>
           </div>
