@@ -25,7 +25,8 @@ const getAOrder = async(req,res) =>{
         if(!user){
             return res.status(404).json({message:"User not found!"});
         }
-        const order = await Order.findById(id);
+        const order = await Order.findById(id)
+        .populate('order_items.productId');
         if(!order){
             return res.status(404).json({message:"Order details not found"});
         }
@@ -64,14 +65,15 @@ const paymentIndegration = async(req,res) =>{
 
     try {
         const paymentIntent = await stripe.paymentIntents.create({
-            amount:amount * 100, // Convert amount to cents (Stripe requires smallest currency unit)
-            currency: 'usd',
-        });
+            amount: amount, // Amount in cents
+            currency: 'usd', 
+            payment_method_types: ['card', 'google_pay', 'apple_pay', 'us_bank_account'], 
+          });
 
         res.json({
             clientSecret: paymentIntent.client_secret,
             paymentId: paymentIntent.id, // Transaction ID
-            status: paymentIntent.status, // Status (requires confirmation on frontend)
+            // status: paymentIntent.status, // Status (requires confirmation on frontend)
         });
     } catch (error) {
         console.error(error);

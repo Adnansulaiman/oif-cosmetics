@@ -18,6 +18,7 @@ import Orders from "./pages/Orders";
 import NotFound from "./pages/NotFound";
 import Checkout from "./pages/Checkout";
 import StripeContainer from "./components/StripeContainer";
+import SingleOrder from "./pages/SingleOrder";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/register" element={<SignUp />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/orders" element={<Orders />} />
+        <Route path="/orders/:id" element={<SingleOrder />} />
         <Route path="/product/:prodId" element={<SingleProduct />} />
         <Route path="/profile" element={<Profile />}>
           <Route path="/profile/" element={<UserProfile />} />

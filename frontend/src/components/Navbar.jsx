@@ -157,11 +157,11 @@ const Navbar = () => {
           </div>
           <ul className="flex flex-col px-4">
             <Link to='/wishlist'
-             onClick={() => setOpenMenu(false)}>
+             onClick={() => setProfileOpen(false)}>
               <li>Wishlist</li>
             </Link>
             <Link to='/orders'
-             onClick={() => setOpenMenu(false)}>
+             onClick={() => setProfileOpen(false)}>
               <li>Orders</li>
             </Link>
           </ul>
