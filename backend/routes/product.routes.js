@@ -7,7 +7,8 @@ const {
   addProduct,
   getAProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  relatedProducts
 } = require("../controllers/product.controllers");
 const { protect, adminProtect } = require("../middlewares/authMiddleware");
 
@@ -15,6 +16,7 @@ const router = express.Router();
 
 router.get("/", getAllProducts);
 router.get("/:id", getAProduct);
+router.post("/related-products", relatedProducts);
 router.post("/", protect, adminProtect, addProduct);
 router.put("/:id", protect, adminProtect,upload.array('photos',4), updateProduct);
 router.delete("/:id", protect, adminProtect, deleteProduct);

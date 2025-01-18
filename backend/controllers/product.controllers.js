@@ -1,6 +1,7 @@
 const Product = require('../models/Product')
 const cloudinary = require('cloudinary').v2;
-const fs = require('fs')
+const fs = require('fs');
+const User = require('../models/User');
 
 
 const getAllProducts =async(req,res)=>{
@@ -141,11 +142,23 @@ const deleteProduct = async(req,res) => {
         res.status(500).json({message:"Error while delete a product"})
     }
 }
+const relatedProducts = async(req,res) =>{
+    const {category} = req.body;
+    try{
+        const products = await Product.find({category:category})
+        res.status(200).json({products})
+
+    }catch(err){
+        console.log(err);
+        res.status(500).json({message:"Error while fetching related products"})
+    }
+}
 
 module.exports = {
     getAllProducts,
     addProduct,
     getAProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    relatedProducts
 }

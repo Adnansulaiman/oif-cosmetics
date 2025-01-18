@@ -9,6 +9,7 @@ import Loading from "../components/Loading";
 import { IoMdCheckmark } from "react-icons/io";
 import ButtonLoading from "../components/ButtonLoading";
 import { useUserInfo } from "../context/userContext";
+import RelatedProducts from "../components/RelatedProducts";
 
 const SingleProduct = () => {
   const [quantity,setQuantity] = useState(1)
@@ -69,6 +70,7 @@ const SingleProduct = () => {
     <>
     {loading && <Loading />}
     {product && (
+      <>
       <div className=" flex md:flex-row flex-col w-full h-screen ">
       <div className="flex mt-5 w-full md:w-1/2 jus items-center h-[70vh] md:h-screen pl-10 pb-10 md:pb-0 md:pl-12 pt-20 md:pt-0 gap-5">
         <img
@@ -86,30 +88,7 @@ const SingleProduct = () => {
             alt=""
           />
           ))}
-          {/* <img
-            onClick={()=> setMainImage(product?.images[0])}
-            src={product?.images[0]}
-            className={`w-16 h-16 md:w-32 md:h-32 rounded-lg md:rounded-2xl drop-shadow-md ${mainImage === product?.images[0] && 'border border-black'}  cursor-pointer"`}
-            alt=""
-          />
-          <img
-            onClick={()=> setMainImage(product?.images[1])}
-            src={product?.images[1]}
-            className={`w-16 h-16 md:w-32 md:h-32 rounded-lg md:rounded-2xl drop-shadow-md ${mainImage === product?.images[1] && 'border border-black'}  cursor-pointer"`}
-            alt=""
-          />
-          <img
-            onClick={()=> setMainImage(product?.images[2])}
-            src={product?.images[2]}
-            className={`w-16 h-16 md:w-32 md:h-32 rounded-lg md:rounded-2xl drop-shadow-md ${mainImage === product?.images[2] && 'border border-black'}  cursor-pointer"`}
-            alt=""
-          />
-          <img
-            onClick={()=> setMainImage(product?.images[3])}
-            src={product?.images[3]}
-            className={`w-16 h-16 md:w-32 md:h-32 rounded-lg md:rounded-2xl drop-shadow-md ${mainImage === product?.images[3] && 'border border-black'}  cursor-pointer"`}
-            alt=""
-          /> */}
+          
         </div>
       </div>
       <div className="flex flex-col w-full md:w-1/2 h-screen bg-gray-200 rounded-t-2xl md:rounded-s-2xl px-10  py-5 md:px-12 md:py-32 ">
@@ -162,6 +141,8 @@ const SingleProduct = () => {
         </div>
       </div>
     </div>
+    <RelatedProducts category={product?.category} id={product?._id} />
+    </>
     )}
     
     </>
