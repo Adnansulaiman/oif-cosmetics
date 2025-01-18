@@ -99,9 +99,11 @@ const Login = () => {
               />
               <p className="md:text-base text-sm">Remember me</p>
             </div>
+            <Link to='/forget-password'>
             <p className="underline  text-sm md:text-base mb-3 hover:opacity-80 cursor-pointer">
               forget password?
             </p>
+            </Link>
           </div>
           {setErrorMessage && (
             <p className="text-sm md:text-base  text-red-500">{errorMessage}</p>

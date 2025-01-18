@@ -19,6 +19,7 @@ import NotFound from "./pages/NotFound";
 import Checkout from "./pages/Checkout";
 import StripeContainer from "./components/StripeContainer";
 import SingleOrder from "./pages/SingleOrder";
+import ForgetPassword from "./pages/ForgetPassword";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
           }
         />
         <Route path="*" element={<NotFound />} />
+        <Route path="/forget-password" element={<ForgetPassword />} />
       </Routes>
     </div>
   );
