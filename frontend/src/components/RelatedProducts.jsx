@@ -20,7 +20,7 @@ const RelatedProducts = ({category,id}) => {
                     `http://localhost:3000/api/products/related-products`,
                     {category:category}
                 );
-                console.log(response.data);
+                // console.log(response.data);
                 setRelatedData(response.data.products)
             }catch(err){
                 console.log(err)

@@ -2,6 +2,7 @@ import ShopThumb from "../assets/images/shop-image-1.jpg";
 import ProductCard from "../components/ProductCard";
 import ShopFilter from "../components/ShopFilter";
 // import { IoIosClose } from "react-icons/io";
+import { IoSearch } from "react-icons/io5";
 import { IoIosArrowDown } from "react-icons/io";
 import { CiFilter } from "react-icons/ci";
 import { useState, useEffect, useRef } from "react";
@@ -10,6 +11,8 @@ import Loading from "../components/Loading";
 // import axios from "axios";
 
 const Shop = () => {
+  
+
   // const [refresh,setRefresh] = useState(false)
   const [filterOpen, setFilterOpen] = useState(false);
   const filterRef = useRef();
@@ -38,14 +41,26 @@ const Shop = () => {
       ingredients: [],
     });
   };
-  
+  //Search algorithm 
+  const [searchQuery,setSearchQuery] = useState('');
+  const handleSearchChange = (e) =>{
+    // console.log(e.target.value);
+    setSearchQuery(e.target.value);
+  }
+  const filteredData = products.filter(item => {
+    return(
+      item?.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item?.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item?.brand.toLowerCase().includes(searchQuery.toLowerCase()) 
+    )
+  })
   return (
     <>
       {products && (
         <div className="bg-contain bg-secondary ">
           <div className="pt-24 mx-4  md:mx-12 text-white ">
             <div
-              className="  rounded-2xl h-52 md:h-96 bg-cover bg-center p-10"
+              className=" relative rounded-2xl h-52 md:h-96 bg-cover bg-center p-10"
               style={{ backgroundImage: `url(${ShopThumb})` }}
             >
               <h1 className="text-3xl md:text-7xl font-bold max-w-5xl  ">
@@ -55,6 +70,18 @@ const Shop = () => {
                 Discover your natural beauty with a marketplace of skincare
                 products from the world's best brands{" "}
               </p>
+              <div className="absolute bottom-2 md:bottom-5 right-3 md:right-10 flex justify-end  w-full ">
+                <input
+                  className="w-1/2 h-8 md:h-12 px-5 md:text-base text-sm text-white placeholder:text-white border-2 border-white rounded-full bg-transparent focus:border-white focus:outline-none focus:caret-white placeholder:caret-white"
+                  type="text"
+                  placeholder="Search"
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                />
+                <div className="flex absolute top-1 right-1 bg-white border-2 border-white rounded-full p-1 md:p-2 ">
+                  <IoSearch className=" text-xs md:text-xl text-black" />
+                </div>
+              </div>
             </div>
             <div className="flex mt-6 gap-4">
               {/* <ShopFilter /> */}
@@ -76,7 +103,12 @@ const Shop = () => {
                     <CiFilter className="mt-1" />
                   </div>
                   <div className="flex justify-center cursor-pointer items-center gap-10">
-                    <p onClick={handleClearFilters} className="text-sm font-semibold hover:underline">Clear all</p>
+                    <p
+                      onClick={handleClearFilters}
+                      className="text-sm font-semibold hover:underline"
+                    >
+                      Clear all
+                    </p>
                     <div className="flex gap-1 justify-center cursor-pointer items-center">
                       <p className="font-semibold">Sort</p>
                       <IoIosArrowDown className="mt-1" />
@@ -84,8 +116,8 @@ const Shop = () => {
                   </div>
                 </div>
                 <div className="flex gap-2 md:gap-10  justify-center flex-wrap px-11 ">
-                  {products?.length ? (
-                    products.map((product) => (
+                  {filteredData?.length ? (
+                    filteredData.map((product) => (
                       <ProductCard key={product._id} product={product} />
                     ))
                   ) : (
