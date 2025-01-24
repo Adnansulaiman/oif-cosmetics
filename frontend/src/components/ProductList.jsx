@@ -1,6 +1,6 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import ProductCard from './ProductCard';
+import React from 'react'
+import ProductCard from "./ProductCard";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
@@ -9,31 +9,17 @@ import "swiper/css";
 import "swiper/css/scrollbar";
 // import required modules
 import { Scrollbar } from "swiper/modules";
-import ProductList from './ProductList';
+// import { useContext } from "react";
+// import {  useProduct } from "../context/ProductContext";
 
-
-const RelatedProducts = ({category,id}) => {
-    const [relatedData,setRelatedData] = useState(null);
-    useEffect(()=>{
-        const fetchRelatedProducts =async () =>{
-            try{
-                const response = await axios.post(
-                    `http://localhost:3000/api/products/related-products`,
-                    {category:category}
-                );
-                // console.log(response.data);
-                setRelatedData(response.data.products)
-            }catch(err){
-                console.log(err)
-            }
-        }
-        fetchRelatedProducts()
-    },[])
+import Loading from "./Loading";
+const ProductList = ({title,products}) => {
+    
   return (
-    <div className="flex flex-col mt-5 ">
-        {/* {relatedData && (
-        <div className=" px-4 md:px-12 pt-10">
-          <h1 className="text-3xl font-bold">Related Products</h1>
+    <>
+      {products && (
+        <div className=" px-4 md:px-12 py-8">
+          <h1 className="text-3xl font-semibold">{title}</h1>
           <div className="hidden md:flex">
             <Swiper
               slidesPerView={4.5}
@@ -47,7 +33,7 @@ const RelatedProducts = ({category,id}) => {
               className="mySwiper "
               style={{ width: "100%", overflow: "hidden" }}
             >
-              {relatedData?.map((product) => (
+              {products?.map((product) => (
                 <SwiperSlide key={product?._id}>
                   <ProductCard product={product} />
                 </SwiperSlide>
@@ -67,7 +53,7 @@ const RelatedProducts = ({category,id}) => {
               className="mySwiper  "
               style={{ width: "100%", overflow: "hidden" }}
             >
-              {relatedData?.map((product) => (
+              {products?.map((product) => (
                 <SwiperSlide key={product?._id}>
                   <ProductCard product={product} />
                 </SwiperSlide>
@@ -87,7 +73,7 @@ const RelatedProducts = ({category,id}) => {
               className="mySwiper  "
               style={{ width: "100%", overflow: "hidden" }}
             >
-              {relatedData?.map((product) => (
+              {products?.map((product) => (
                 <SwiperSlide key={product?._id}>
                   <ProductCard product={product} />
                 </SwiperSlide>
@@ -95,10 +81,15 @@ const RelatedProducts = ({category,id}) => {
             </Swiper>
           </div>
         </div>
+      )}
+      {/* {loading && (
+        <Loading />
       )} */}
-      <ProductList products={relatedData} title='Related Products' />
-    </div>
+    </>
   )
 }
 
-export default RelatedProducts
+export default ProductList
+
+
+

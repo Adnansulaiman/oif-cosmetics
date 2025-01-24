@@ -72,7 +72,7 @@ const Shop = () => {
               </p>
               <div className="absolute bottom-2 md:bottom-5 right-3 md:right-10 flex justify-end  w-full ">
                 <input
-                  className="w-1/2 h-8 md:h-12 px-5 md:text-base text-sm text-white placeholder:text-white border-2 border-white rounded-full bg-transparent focus:border-white focus:outline-none focus:caret-white placeholder:caret-white"
+                  className="w-1/2 h-8 md:h-12 px-5 md:text-base text-sm text-white placeholder:text-sm md:placeholder:text-base placeholder:text-white border-2 border-white rounded-full bg-transparent focus:border-white focus:outline-none focus:caret-white placeholder:caret-white"
                   type="text"
                   placeholder="Search"
                   value={searchQuery}

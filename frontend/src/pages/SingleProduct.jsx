@@ -71,7 +71,7 @@ const SingleProduct = () => {
     {loading && <Loading />}
     {product && (
       <>
-      <div className=" flex md:flex-row flex-col w-full h-screen ">
+      <div className=" flex md:flex-row flex-col w-full h-screen bg-gray-100 ">
       <div className="flex mt-5 w-full md:w-1/2 jus items-center h-[70vh] md:h-screen pl-10 pb-10 md:pb-0 md:pl-12 pt-20 md:pt-0 gap-5">
         <img
           src={mainImage}
