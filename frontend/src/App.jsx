@@ -21,6 +21,7 @@ import StripeContainer from "./components/StripeContainer";
 import SingleOrder from "./pages/SingleOrder";
 import ForgetPassword from "./pages/ForgetPassword";
 import Footer from "./components/Footer";
+import About from "./pages/About";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/shop" element={<Shop />} />
+        <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<SignUp />} />
         <Route path="/wishlist" element={<Wishlist />} />
