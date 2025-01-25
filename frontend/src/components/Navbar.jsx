@@ -98,12 +98,12 @@ const Navbar = () => {
           >
             <li className="hover:scale-110">Contact</li>
           </NavLink>
-          <NavLink
+          {/* <NavLink
             to="/blog"
             style={({ isActive }) => (isActive ? { fontWeight: "bold" } : null)}
           >
             <li className="hover:scale-110">Blog</li>
-          </NavLink>
+          </NavLink> */}
         </ul>
         <p className="text-3xl font-black pr-52">OIF.</p>
         <div className="flex  gap-16 items-center">
@@ -302,7 +302,7 @@ const Navbar = () => {
                   Contact
                 </li>
               </NavLink>
-              <NavLink
+              {/* <NavLink
                 to="/blog"
                 onClick={() => setOpenMenu(false)}
                 style={({ isActive }) =>
@@ -313,7 +313,7 @@ const Navbar = () => {
                   <MdOutlineArticle className="text-lg" />
                   Blog
                 </li>
-              </NavLink>
+              </NavLink> */}
             </ul>
             <ul className="flex flex-col px-4 border-t border-black border-opacity-40 pt-3">
             <Link to='/wishlist'
