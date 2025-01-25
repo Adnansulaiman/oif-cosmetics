@@ -19,7 +19,7 @@ const ProductList = ({title,products}) => {
     <>
       {products && (
         <div className=" px-4 md:px-12 py-8">
-          <h1 className="text-3xl font-semibold">{title}</h1>
+          <h1 className="text-xl md:text-3xl font-semibold">{title}</h1>
           <div className="hidden md:flex">
             <Swiper
               slidesPerView={4.5}

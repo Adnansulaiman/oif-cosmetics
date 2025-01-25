@@ -20,6 +20,7 @@ import Checkout from "./pages/Checkout";
 import StripeContainer from "./components/StripeContainer";
 import SingleOrder from "./pages/SingleOrder";
 import ForgetPassword from "./pages/ForgetPassword";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
         <Route path="/forget-password" element={<ForgetPassword />} />
       </Routes>
+      <Footer />
     </div>
   );
 }

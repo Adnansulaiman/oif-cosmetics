@@ -87,7 +87,7 @@ const ProductCard = ({ product, onRemoveFromWishlist }) => {
   return (
     <Link to={`/product/${product?._id}`}>
       <div
-        className="w-44 h-44 sm:w-52 sm:h-52 md:w-72 md:h-72 flex flex-col justify-between py-3 rounded-2xl bg-cover bg-center mt-5 md:mb-10 drop-shadow-md"
+        className="hover:scale-105 w-44 h-44 sm:w-52 sm:h-52 md:w-72 md:h-72 flex flex-col justify-between py-3 rounded-2xl bg-cover bg-center mt-5 md:mb-10 drop-shadow-md"
         style={{ backgroundImage: `url(${product?.images[0]})` }}
       >
         <div className="flex justify-between px-3 items-center">
