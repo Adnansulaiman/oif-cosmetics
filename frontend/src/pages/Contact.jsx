@@ -44,16 +44,16 @@ const Contact = () => {
                 </label>
                 <input
                   type="number"
-                  className="border-b-2 border-black w-full  focus:outline-none"
+                  className="border-b-2 border-black w-full bg-transparent  focus:outline-none"
                 />
               </div>
               <div className="flex flex-col w-full">
-                <label htmlFor="" className="text-base md:text-lg  font-semibold">
+                <label htmlFor="" className="text-base md:text-lg   font-semibold">
                   Subject
                 </label>
                 <input
                   type="text"
-                  className="border-b-2 border-black w-full  focus:outline-none"
+                  className="border-b-2 border-black w-full bg-transparent   focus:outline-none"
                 />
               </div>
             </div>
@@ -63,7 +63,7 @@ const Contact = () => {
               </label>
               <textarea
                 rows={4}
-                className="border-b-2 border-black w-full  focus:outline-none"
+                className="border-b-2 border-black w-full bg-transparent focus:outline-none"
               />
             </div>
             <div className="flex justify-end">

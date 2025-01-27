@@ -60,32 +60,68 @@ const getAllOrders = async(req,res) =>{
         res.status(500).json({message:"Error while fetching orders"})
     }
 }
-const paymentIndegration = async(req,res) =>{
-    const { amount } = req.body;
-
+const makePayment = async (req, res) => {
     try {
-        const paymentIntent = await stripe.paymentIntents.create({
-            amount: amount, // Amount in cents
-            currency: 'usd', 
-            payment_method_types: ['card', 'google_pay', 'apple_pay', 'us_bank_account'], 
-          });
+        const { products } = req.body; // Assume products are sent in the request body
 
-        res.json({
-            clientSecret: paymentIntent.client_secret,
-            paymentId: paymentIntent.id, // Transaction ID
-            // status: paymentIntent.status, // Status (requires confirmation on frontend)
+        // Map products to the format Stripe requires for line items
+        const line_items = products.map(product => ({
+            price_data: {
+                currency: 'usd', // Set your currency
+                product_data: {
+                    name: product.name, // Dynamic product name
+                },
+                unit_amount: product.price * 100, // Convert price to cents
+            },
+            quantity: product.quantity,
+        }));
+
+        // Create a checkout session with dynamic products
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            line_items,
+            mode: 'payment',
+            success_url: 'http://localhost:5173/checkout/success',
+            cancel_url: 'http://localhost:3000/cancel',
         });
+        // console.log('Stripe session created:', session);  // Log session creation
+        return res.json(session);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Payment failed' });
+        res.status(500).send("An error occurred while processing the payment.");
     }
-}
+};
+
+
+  const verifyPayment = async(req,res) =>{
+    const { sessionId } = req.params;
+
+  try {
+    // Retrieve the session from Stripe
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+    // Check if payment was successful
+    if (session.payment_status === 'paid') {
+      // Respond with payment status
+      res.json({ paymentStatus: 'paid' });
+    } else {
+      // Respond with failed payment status
+      res.json({ paymentStatus: 'failed' });
+    }
+  } catch (error) {
+    console.error('Error verifying payment status:', error);
+    res.status(500).send('Server Error');
+  }
+  }
 module.exports = {
     billingProcess,
     getAOrder,
     getUserOrder,
     getAllOrders,
-    paymentIndegration
+    // paymentIndegration
+    makePayment,
+    // webhook,
+    verifyPayment
 }
 
 

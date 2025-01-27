@@ -6,55 +6,19 @@ import { useAuth } from "../context/AuthContext";
 import useForm from "../hooks/useForm";
 import { useUserInfo } from "../context/userContext";
 import axios from "axios";
-import SuccessImage from "../assets/images/check.png";
-import { Link } from "react-router-dom";
-import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+
+import { loadStripe } from "@stripe/stripe-js";
+import { useNavigate } from "react-router-dom";
+// import { Elements, useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
+const stripePromise = loadStripe("pk_test_51QgVb5BUv5zQzyPf1PnfvFnkqe6LRYo3pLcuOZPagpkqmun7ApgRVKZJ774jXoP0TYA8d8gMiLu3YMQ1L9YTTh9t00rcfPAbDO");
+
 
 const Checkout = () => {
-  //payment indegration
-  const stripe = useStripe();
-  const elements = useElements();
-  const [paymentStatus, setPaymentStatus] = useState("");
-  const [paymentOpen,setPaymentOpen ] = useState(false);
-
+  const navigate = useNavigate();
   
-  const handlePayment = async () => {
-    try {
-    // Fetch clientSecret from the backend
-    const token = localStorage.getItem('token');
-    const response = await axios.post(
-      "http://localhost:3000/api/order/payment",
-      {
-        amount: cartData?.totalPrice + shippingPrice,
-      },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-
-    const { clientSecret } = response.data;
-
-    // Confirm the payment
-    const { error, paymentIntent } = await stripe.confirmCardPayment(
-      clientSecret,
-      {
-        payment_method: {
-          card: elements.getElement(CardElement),
-        },
-      }
-    );
-
-    if (error) {
-      console.error(error);
-      setPaymentStatus("Payment failed");
-    } else if (paymentIntent.status === "succeeded") {
-      console.log("Transaction ID:", paymentIntent.id);
-      setPaymentOpen(false); // Close payment popup
-      setSuccessOrder(true); // Show success popup
-    }
-  } catch (err) {
-    console.log(err);
-    setPaymentStatus("Payment failed");
-  }
-  };
+  // const stripe = useStripe();
+  // const elements = useElements();
+  
 
   const { userData } = useAuth();
   console.log("user data : ", userData);
@@ -93,7 +57,7 @@ const Checkout = () => {
     }
   }, [userData, setValues]);
   console.log("formData:", formData);
-  const [successOrder, setSuccessOrder] = useState(false);
+  // const [successOrder, setSuccessOrder] = useState(false);
   const [checkoutStatus, setCheckoutStatus] = useState("address");
   const [paymentMethod, setPaymentMethod] = useState("online");
   const [shippingPrice, setShippingPrice] = useState(0);
@@ -108,11 +72,50 @@ const Checkout = () => {
     e.preventDefault();
     // console.log("Submit successfully")
     if(paymentMethod === 'online'){
-      setPaymentOpen(true);
+      await handleCheckout();
       return;
     }
     try {
-      const token = localStorage.getItem("token");
+      await placeOrder();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // On the payment success or failure page
+const checkPaymentStatus = async () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const sessionId = urlParams.get('session_id');
+  
+  if (sessionId) {
+    try {
+      const token = localStorage.getItem('token')
+      // Call your backend to verify the payment status using sessionId
+      const response = await axios.get(`http://localhost:3000/api/order/verify-payment/${sessionId}`,{
+        headers:{
+          Authorization: `Bearer ${token}`,
+        }
+      });
+
+      const { paymentStatus } = response.data;
+      console.log(paymentStatus);
+      if (paymentStatus === 'paid') {
+        // Payment was successful, now place the order in your database
+        placeOrder();
+      } else {
+        // Payment failed, show an error message
+        alert('Payment failed');
+      }
+    } catch (error) {
+      console.error('Error verifying payment:', error);
+    }
+  }
+};
+
+checkPaymentStatus();
+
+  const placeOrder = async() =>{
+    const token = localStorage.getItem("token");
       const orderItems = cartData.cartItems.map((item) => ({
         productId: item.productId._id, // Get the product ID
         quantity: item.quantity, // Get the quantity
@@ -144,14 +147,38 @@ const Checkout = () => {
       );
       console.log("Order placed successfully",response.data);
       if (response.data) {
-        setSuccessOrder(true);
+        // setSuccessOrder(true);
         clearCart();
+        navigate('/checkout/success');
       }
       resetForm();
-    } catch (err) {
-      console.log(err);
+  }
+  const handleCheckout =async ()=>{
+    try {
+      if(paymentMethod === 'online'){
+      const token = localStorage.getItem('token');
+      const orderItems = cartData.cartItems.map(item => ({
+        name: item.productId.name,
+        price: item.productId.price,
+        quantity: item.quantity,
+      }));
+      const response = await axios.post(
+        "http://localhost:3000/api/order/payment",
+        { products: orderItems },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      console.log('Stripe session response:', response.data); // Log the response
+      const {id} = response.data;
+
+      //load stripe and redirect to checkout
+      const stripe = await stripePromise;
+      await stripe.redirectToCheckout({ sessionId: id });
     }
-  };
+    } catch (error) {
+      console.error(error);
+    }
+}
+
 
   return (
     <>
@@ -326,6 +353,11 @@ const Checkout = () => {
                     </p>
                   </div>
                 </div>
+                {/* {paymentMethod === "online" && (
+                  <Elements stripe={stripePromise}>
+                    <CardElement className="border p-4" />
+                  </Elements>
+                )} */}
                 <div className="text-center flex items-center mt-5 w-full md:w-1/2 justify-center">
                   <button
                     type="submit"
@@ -349,7 +381,7 @@ const Checkout = () => {
           )}
         </form>
       </div>
-      {paymentOpen && paymentMethod === "online" && (
+      {/* {paymentOpen && paymentMethod === "online" && (
         <div className=" flex justify-center items-center absolute top-0 left-0 w-full h-screen bg-gray-100 backdrop:blur-md">
         <div className="flex flex-col w-1/2">
           <div className="mt-10">
@@ -366,25 +398,8 @@ const Checkout = () => {
           </div>
         </div>
         </div>
-      )}
-      {successOrder && (
-        <div className="absolute flex justify-center items-center bg-green-500 top-0 left-0 w-full h-[111vh] z-40 ">
-          <div className=" flex flex-col justify-center rounded-2xl items-center shadow-slate-600 py-10 shadow-sm bg-white w-full mx-10 md:w-2/5">
-            <img src={SuccessImage} className="w-16 md:w-24" alt="success image" />
-            <h1 className="text-3xl md:text-4xl text-slate-900 font-medium mt-4">
-              Wooohoo!
-            </h1>
-            <p className="text-xl text-slate-600 font-medium">
-              Your order has been placed
-            </p>
-            <Link to="/shop">
-              <button className="text-xl bg-slate-950 text-white px-10 py-4 font-medium rounded-lg mt-8">
-                Continue Shopping
-              </button>
-            </Link>
-          </div>
-        </div>
-      )}
+      )} */}
+     
     </>
   );
 };

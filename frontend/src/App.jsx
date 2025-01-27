@@ -17,12 +17,14 @@ import Orders from "./pages/Orders";
 // import Chekout from "./pages/Chekout";
 import NotFound from "./pages/NotFound";
 import Checkout from "./pages/Checkout";
-import StripeContainer from "./components/StripeContainer";
+// import StripeContainer from "./components/StripeContainer";
 import SingleOrder from "./pages/SingleOrder";
 import ForgetPassword from "./pages/ForgetPassword";
 import Footer from "./components/Footer";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import OrderSuccess from "./components/OrderSuccess";
+// import PaymentForm from "./components/PaymentForm";
 
 function App() {
   return (
@@ -46,16 +48,11 @@ function App() {
           <Route path="/profile/orders" element={<Orders />} />
           <Route path="/profile/wishlist" element={<Wishlist />} />
         </Route>
-        <Route
-          path="/checkout"
-          element={
-            <StripeContainer>
-              <Checkout />{" "}
-            </StripeContainer>
-          }
-        />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/checkout/success" element={<OrderSuccess />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/forget-password" element={<ForgetPassword />} />
+        {/* <Route path="/payment" element={<PaymentForm />} /> */}
       </Routes>
       <Footer />
     </div>
