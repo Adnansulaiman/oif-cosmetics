@@ -5,7 +5,7 @@ import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { ProductProvider } from "./context/ProductContext.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
-import { UserProvider } from "./context/UserContext.jsx";
+import { UserProvider } from "./context/userContext.jsx";
 // import { UserProvider } from "./context/UserContext.jsx";
 UserProvider
 
