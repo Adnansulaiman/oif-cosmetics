@@ -49,7 +49,7 @@ const Profile = () => {
   
         const token = localStorage.getItem("token");
         const response = await axios.put(
-          `http://localhost:3000/api/user/upload-image`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/user/upload-image`,
           formData,
           {
             headers: {
@@ -72,7 +72,7 @@ const Profile = () => {
       try{
         const token = localStorage.getItem("token");
         const response = await axios.delete(
-          `http://localhost:3000/api/user/delete-image`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/user/delete-image`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

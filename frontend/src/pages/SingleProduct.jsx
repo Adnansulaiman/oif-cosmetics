@@ -52,7 +52,7 @@ const SingleProduct = () => {
     try {
       const fetchProductDetails = async (id) => {
         const response = await axios.get(
-          `http://localhost:3000/api/products/${id}`
+          `${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`
         );
         setProduct(response.data);
         setMainImage(response.data?.images[0])

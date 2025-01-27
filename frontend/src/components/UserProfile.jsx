@@ -103,7 +103,7 @@ const UserProfile = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        `http://localhost:3000/api/user/`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/`,
         {
           firstName: accountData?.firstName,
           lastName: accountData?.lastName,
@@ -133,7 +133,7 @@ const UserProfile = () => {
       if (isEditing) {
         // Update Address
         const response = await axios.put(
-          `http://localhost:3000/api/user/update-address/${editingAddressId}`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/user/update-address/${editingAddressId}`,
           addressData,
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -141,7 +141,7 @@ const UserProfile = () => {
       } else {
         // Add New Address
         const response = await axios.post(
-          `http://localhost:3000/api/user/add-address`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/user/add-address`,
           addressData,
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -165,7 +165,7 @@ const UserProfile = () => {
       // console.log('Id : ',id)
       const token = localStorage.getItem("token");
       const response = await axios.delete(
-        `http://localhost:3000/api/user/delete-address/${id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/delete-address/${id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       console.log(response.data)

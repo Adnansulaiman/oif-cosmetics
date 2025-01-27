@@ -91,7 +91,7 @@ const checkPaymentStatus = async () => {
     try {
       const token = localStorage.getItem('token')
       // Call your backend to verify the payment status using sessionId
-      const response = await axios.get(`http://localhost:3000/api/order/verify-payment/${sessionId}`,{
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/order/verify-payment/${sessionId}`,{
         headers:{
           Authorization: `Bearer ${token}`,
         }
@@ -121,7 +121,7 @@ checkPaymentStatus();
         quantity: item.quantity, // Get the quantity
       }));
       const response = await axios.post(
-        `http://localhost:3000/api/order/`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/order/`,
         {
           user_id: userData?._id,
           order_items: orderItems,
@@ -163,7 +163,7 @@ checkPaymentStatus();
         quantity: item.quantity,
       }));
       const response = await axios.post(
-        "http://localhost:3000/api/order/payment",
+        `${import.meta.env.VITE_BACKEND_URL}/api/order/payment`,
         { products: orderItems },
         { headers: { Authorization: `Bearer ${token}` } }
       );

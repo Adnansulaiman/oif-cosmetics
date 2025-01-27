@@ -9,7 +9,7 @@ const Wishlist = () => {
         const fetchWishlistProduct = async()=>{
             try{
                 const token = localStorage.getItem('token')
-                const response = await axios.get(`http://localhost:3000/api/user/wishlist`, {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/wishlist`, {
                     headers: {
                       Authorization: `Bearer ${token}`,
                     }

@@ -28,7 +28,7 @@ const Login = () => {
     setSuccessMessage("");
     try {
       const response = await axios.post(
-        `http://localhost:3000/api/auth/login`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/login`,
         formData,
         {
           headers: {

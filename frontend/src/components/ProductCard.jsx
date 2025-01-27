@@ -57,7 +57,7 @@ const ProductCard = ({ product, onRemoveFromWishlist }) => {
       setWishlistLoading(true);
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        `http://localhost:3000/api/user/wishlist/${id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/wishlist/${id}`,
         {},
         {
           headers: {

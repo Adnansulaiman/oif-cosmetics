@@ -24,7 +24,7 @@ const ForgetPassword = () => {
     try {
       // console.log(emailData)
       const response = await axios.post(
-        `http://localhost:3000/api/auth/send-otp`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/send-otp`,
         emailData,
         {
           headers: { "Content-Type": "application/json" },
@@ -49,7 +49,7 @@ const ForgetPassword = () => {
     try {
       // console.log(otpData)
       const response = await axios.post(
-        `http://localhost:3000/api/auth/verify-otp`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/verify-otp`,
         {
           email: emailData.email,
           otp: otpData.otp,
@@ -84,7 +84,7 @@ const ForgetPassword = () => {
     try {
     //   console.log(passwordData);
     const response = await axios.post(
-        `http://localhost:3000/api/auth/change-password`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/change-password`,
         {
             email:emailData.email,
             newPassword:passwordData.newPassword,

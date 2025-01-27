@@ -21,7 +21,7 @@ export const UserProvider = ({ children }) => {
     const fetchCartProducts = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(`http://localhost:3000/api/cart/getcart`, {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/cart/getcart`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         console.log("Response from get Cart : ",response.data)
@@ -39,7 +39,7 @@ export const UserProvider = ({ children }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        `http://localhost:3000/api/cart/addcart`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/cart/addcart`,
         { productId, quantity },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -55,7 +55,7 @@ export const UserProvider = ({ children }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.delete(
-        `http://localhost:3000/api/cart/resetcart`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/cart/resetcart`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       console.log("Reset cart!")
@@ -68,7 +68,7 @@ export const UserProvider = ({ children }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.delete(
-        `http://localhost:3000/api/cart/removecart/${productId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/cart/removecart/${productId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
@@ -82,7 +82,7 @@ export const UserProvider = ({ children }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        `http://localhost:3000/api/cart/incrementcart/${productId}`,{},
+        `${import.meta.env.VITE_BACKEND_URL}/api/cart/incrementcart/${productId}`,{},
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
@@ -96,7 +96,7 @@ export const UserProvider = ({ children }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        `http://localhost:3000/api/cart/decrementcart/${productId}`,{},
+        `${import.meta.env.VITE_BACKEND_URL}/api/cart/decrementcart/${productId}`,{},
         { headers: { Authorization: `Bearer ${token}` } }
       );
       

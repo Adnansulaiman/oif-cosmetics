@@ -31,7 +31,7 @@ export const ProductProvider = ({ children }) => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/products?${query.toString()}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/products?${query.toString()}`
       );
       setProducts(response.data);
     } catch (err) {

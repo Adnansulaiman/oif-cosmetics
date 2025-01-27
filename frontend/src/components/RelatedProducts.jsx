@@ -18,7 +18,7 @@ const RelatedProducts = ({category,id}) => {
         const fetchRelatedProducts =async () =>{
             try{
                 const response = await axios.post(
-                    `http://localhost:3000/api/products/related-products`,
+                    `${import.meta.env.VITE_BACKEND_URL}/api/products/related-products`,
                     {category:category}
                 );
                 // console.log(response.data);

@@ -11,9 +11,10 @@ import {  useProduct } from "../context/ProductContext";
 
 const Home = () => {
   const {products,loading} = useProduct()
-  
+  // console.log(".Env file data : ",import.meta.env.VITE_BACKEND_URL)
   return (
     <div className="">
+
       <Hero />
       <OurBenifits />
       <HomeCategory />

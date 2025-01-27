@@ -19,7 +19,7 @@ const Security = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        `http://localhost:3000/api/user/change-password`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/change-password`,
         formData,
         {
           headers: { Authorization: `Bearer ${token}` },

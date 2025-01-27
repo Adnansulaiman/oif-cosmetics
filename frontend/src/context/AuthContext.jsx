@@ -31,7 +31,7 @@ export const AuthProvider = ({children}) =>{
         try{
             if(token){
                 // console.log(token)
-                const response = await axios.get(`http://localhost:3000/api/user`, {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user`, {
                     headers: {
                       Authorization: `Bearer ${token}`,
                     }
